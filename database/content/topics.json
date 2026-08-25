@@ -1,0 +1,2882 @@
+[
+ {
+  "subject_slug": "maths",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Number Bases",
+  "title": "Number bases and conversion",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Number Bases",
+  "title": "Arithmetic in other bases",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Fractions & Indices",
+  "title": "Fractions, decimals, percentages",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Fractions & Indices",
+  "title": "Laws of indices",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Logarithms",
+  "title": "Introduction to logarithms",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": true
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Logarithms",
+  "title": "Logarithm laws and calculations",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Algebraic Processes",
+  "title": "Simplification and factorisation",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Algebraic Processes",
+  "title": "Change of subject of formula",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Equations",
+  "title": "Linear equations",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Equations",
+  "title": "Simultaneous equations",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Quadratic Equations",
+  "title": "Solving by factorisation",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Quadratic Equations",
+  "title": "Completing the square & formula",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Variation",
+  "title": "Direct and inverse variation",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Variation",
+  "title": "Joint and partial variation",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Geometry",
+  "title": "Angles and polygons",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Geometry",
+  "title": "Circle theorems",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Mensuration",
+  "title": "Areas of plane shapes",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Mensuration",
+  "title": "Volume and surface area of solids",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Trigonometry",
+  "title": "Sine, cosine and tangent",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Trigonometry",
+  "title": "Bearings and distances",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Statistics",
+  "title": "Mean, median and mode",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Statistics",
+  "title": "Standard deviation and charts",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Probability & Revision",
+  "title": "Basic probability",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "maths",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Probability & Revision",
+  "title": "Full revision + past questions",
+  "minutes": 45,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Comprehension Skills",
+  "title": "Reading for main idea",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Comprehension Skills",
+  "title": "Answering in your own words",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Summary Writing",
+  "title": "Identifying key points",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Summary Writing",
+  "title": "Writing tight summaries",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Lexis & Structure",
+  "title": "Synonyms and antonyms",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Lexis & Structure",
+  "title": "Word classes in context",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Concord",
+  "title": "Subject-verb agreement",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Concord",
+  "title": "Tricky concord rules",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Tenses",
+  "title": "Simple, continuous, perfect",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Tenses",
+  "title": "Sequence of tenses",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Oral English",
+  "title": "Vowel and consonant sounds",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Oral English",
+  "title": "Stress and intonation",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Essay Writing I",
+  "title": "Formal and informal letters",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Essay Writing I",
+  "title": "Article and speech writing",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Essay Writing II",
+  "title": "Narrative and descriptive essays",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Essay Writing II",
+  "title": "Argumentative essays",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Figures of Speech",
+  "title": "Simile, metaphor, personification",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Figures of Speech",
+  "title": "Irony, hyperbole, euphemism",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Registers",
+  "title": "Register of law and medicine",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Registers",
+  "title": "Register of farming and sports",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Punctuation & Spelling",
+  "title": "Punctuation marks",
+  "minutes": 20,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Punctuation & Spelling",
+  "title": "Commonly misspelt words",
+  "minutes": 20,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "WAEC essay drill",
+  "minutes": 40,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "english",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Full past-question practice",
+  "minutes": 45,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Measurement",
+  "title": "Fundamental and derived units",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Measurement",
+  "title": "Measuring instruments and errors",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Motion",
+  "title": "Types of motion",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Motion",
+  "title": "Equations of linear motion",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Force & Newton Laws",
+  "title": "Newton laws of motion",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Force & Newton Laws",
+  "title": "Momentum and impulse",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Electric Fields",
+  "title": "Electric fields and potential",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": true
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Electric Fields",
+  "title": "Capacitors and capacitance",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Work, Energy & Power",
+  "title": "Work and energy",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Work, Energy & Power",
+  "title": "Power and efficiency",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Heat Energy",
+  "title": "Temperature and thermometers",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Heat Energy",
+  "title": "Heat capacity and latent heat",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Waves",
+  "title": "Properties of waves",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Waves",
+  "title": "Sound and light waves",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Optics",
+  "title": "Reflection and refraction",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Optics",
+  "title": "Lenses and the eye",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Current Electricity",
+  "title": "Ohm law and resistance",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Current Electricity",
+  "title": "Circuits and electrical energy",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Magnetism",
+  "title": "Magnetic fields",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Magnetism",
+  "title": "Electromagnetic induction",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Modern Physics",
+  "title": "Atomic structure",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Modern Physics",
+  "title": "Radioactivity",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Calculation drill",
+  "minutes": 40,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "physics",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Past-question marathon",
+  "minutes": 45,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Particulate Nature",
+  "title": "Atoms, molecules and ions",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Particulate Nature",
+  "title": "Laws of chemical combination",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Atomic Structure",
+  "title": "Electron configuration",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Atomic Structure",
+  "title": "Periodic table trends",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Mole Concept",
+  "title": "Understanding the mole",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": true
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Mole Concept",
+  "title": "Mole calculations and stoichiometry",
+  "minutes": 40,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Chemical Equations",
+  "title": "Writing and balancing equations",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Chemical Equations",
+  "title": "Ionic equations",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Acids, Bases & Salts",
+  "title": "Properties and pH",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Acids, Bases & Salts",
+  "title": "Preparation of salts",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Redox Reactions",
+  "title": "Oxidation numbers",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Redox Reactions",
+  "title": "Balancing redox equations",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Electrolysis",
+  "title": "Electrolytes and products",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Electrolysis",
+  "title": "Faraday laws",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Energy Changes",
+  "title": "Exothermic and endothermic",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Energy Changes",
+  "title": "Enthalpy calculations",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Rates & Equilibrium",
+  "title": "Rate of reaction",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Rates & Equilibrium",
+  "title": "Le Chatelier principle",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Organic Chemistry I",
+  "title": "Alkanes, alkenes, alkynes",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Organic Chemistry I",
+  "title": "Isomerism",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Organic Chemistry II",
+  "title": "Alcohols and alkanoic acids",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Organic Chemistry II",
+  "title": "Polymers and their uses",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Practical chemistry drill",
+  "minutes": 40,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "chemistry",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Past-question marathon",
+  "minutes": 45,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Living Things",
+  "title": "Characteristics of living things",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Living Things",
+  "title": "Classification of organisms",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Cell Biology",
+  "title": "Cell structure and functions",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Cell Biology",
+  "title": "Cell division: mitosis & meiosis",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Nutrition",
+  "title": "Photosynthesis",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Nutrition",
+  "title": "Modes of nutrition in animals",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Transport Systems",
+  "title": "Transport in plants",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Transport Systems",
+  "title": "Blood and circulation",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Respiration",
+  "title": "Aerobic and anaerobic respiration",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Respiration",
+  "title": "The respiratory system",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Excretion & Homeostasis",
+  "title": "Excretory organs",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Excretion & Homeostasis",
+  "title": "Homeostasis and the kidney",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Reproduction",
+  "title": "Reproduction in plants",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Reproduction",
+  "title": "Human reproductive system",
+  "minutes": 30,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Genetics",
+  "title": "Mendel laws",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Genetics",
+  "title": "Sex determination and blood groups",
+  "minutes": 35,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Evolution",
+  "title": "Theories of evolution",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Evolution",
+  "title": "Evidence for evolution",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Ecology I",
+  "title": "Ecosystems and habitats",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Ecology I",
+  "title": "Food chains and energy flow",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Ecology II",
+  "title": "Nutrient cycles",
+  "minutes": 25,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Ecology II",
+  "title": "Conservation of natural resources",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Diagram drill",
+  "minutes": 35,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "biology",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Revision",
+  "title": "Past-question marathon",
+  "minutes": 45,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Economics · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Economics · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Economics · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Economics · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Economics · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Economics · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Economics · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Economics · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Economics · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Economics · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Economics · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Economics · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Economics · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Economics · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Economics · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Economics · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Economics · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Economics · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Economics · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Economics · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Economics · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Economics · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Economics · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "economics",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Economics · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Government · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Government · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Government · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Government · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Government · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Government · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Government · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Government · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Government · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Government · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Government · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Government · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Government · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Government · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Government · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Government · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Government · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Government · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Government · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Government · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Government · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Government · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Government · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "government",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Government · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Literature-in-English · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Literature-in-English · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Literature-in-English · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Literature-in-English · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Literature-in-English · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Literature-in-English · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Literature-in-English · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Literature-in-English · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Literature-in-English · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Literature-in-English · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Literature-in-English · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Literature-in-English · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Literature-in-English · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Literature-in-English · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Literature-in-English · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Literature-in-English · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Literature-in-English · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Literature-in-English · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Literature-in-English · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Literature-in-English · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Literature-in-English · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Literature-in-English · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Literature-in-English · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "literature",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Literature-in-English · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Agricultural Science · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Agricultural Science · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Agricultural Science · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Agricultural Science · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Agricultural Science · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Agricultural Science · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Agricultural Science · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Agricultural Science · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Agricultural Science · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Agricultural Science · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Agricultural Science · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Agricultural Science · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Agricultural Science · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Agricultural Science · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Agricultural Science · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Agricultural Science · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Agricultural Science · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Agricultural Science · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Agricultural Science · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Agricultural Science · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Agricultural Science · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Agricultural Science · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Agricultural Science · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "agric",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Agricultural Science · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Civic Education · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Civic Education · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Civic Education · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Civic Education · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Civic Education · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Civic Education · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Civic Education · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Civic Education · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Civic Education · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Civic Education · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Civic Education · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Civic Education · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Civic Education · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Civic Education · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Civic Education · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Civic Education · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Civic Education · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Civic Education · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Civic Education · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Civic Education · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Civic Education · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Civic Education · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Civic Education · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "civic",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Civic Education · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Further Mathematics · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Further Mathematics · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Further Mathematics · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Further Mathematics · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Further Mathematics · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Further Mathematics · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Further Mathematics · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Further Mathematics · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Further Mathematics · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Further Mathematics · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Further Mathematics · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Further Mathematics · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Further Mathematics · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Further Mathematics · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Further Mathematics · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Further Mathematics · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Further Mathematics · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Further Mathematics · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Further Mathematics · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Further Mathematics · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Further Mathematics · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Further Mathematics · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Further Mathematics · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "furthermaths",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Further Mathematics · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w1t1",
+  "week": 1,
+  "week_title": "Geography · Module 1",
+  "title": "Core concepts, part 1",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w1t2",
+  "week": 1,
+  "week_title": "Geography · Module 1",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w2t1",
+  "week": 2,
+  "week_title": "Geography · Module 2",
+  "title": "Core concepts, part 2",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w2t2",
+  "week": 2,
+  "week_title": "Geography · Module 2",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w3t1",
+  "week": 3,
+  "week_title": "Geography · Module 3",
+  "title": "Core concepts, part 3",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w3t2",
+  "week": 3,
+  "week_title": "Geography · Module 3",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w4t1",
+  "week": 4,
+  "week_title": "Geography · Module 4",
+  "title": "Core concepts, part 4",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w4t2",
+  "week": 4,
+  "week_title": "Geography · Module 4",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w5t1",
+  "week": 5,
+  "week_title": "Geography · Module 5",
+  "title": "Core concepts, part 5",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w5t2",
+  "week": 5,
+  "week_title": "Geography · Module 5",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w6t1",
+  "week": 6,
+  "week_title": "Geography · Module 6",
+  "title": "Core concepts, part 6",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w6t2",
+  "week": 6,
+  "week_title": "Geography · Module 6",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w7t1",
+  "week": 7,
+  "week_title": "Geography · Module 7",
+  "title": "Core concepts, part 7",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w7t2",
+  "week": 7,
+  "week_title": "Geography · Module 7",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w8t1",
+  "week": 8,
+  "week_title": "Geography · Module 8",
+  "title": "Core concepts, part 8",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w8t2",
+  "week": 8,
+  "week_title": "Geography · Module 8",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w9t1",
+  "week": 9,
+  "week_title": "Geography · Module 9",
+  "title": "Core concepts, part 9",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w9t2",
+  "week": 9,
+  "week_title": "Geography · Module 9",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w10t1",
+  "week": 10,
+  "week_title": "Geography · Module 10",
+  "title": "Core concepts, part 10",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w10t2",
+  "week": 10,
+  "week_title": "Geography · Module 10",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w11t1",
+  "week": 11,
+  "week_title": "Geography · Module 11",
+  "title": "Core concepts, part 11",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w11t2",
+  "week": 11,
+  "week_title": "Geography · Module 11",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w12t1",
+  "week": 12,
+  "week_title": "Geography · Module 12",
+  "title": "Core concepts, part 12",
+  "minutes": 30,
+  "position": 1,
+  "has_rich_lesson": false
+ },
+ {
+  "subject_slug": "geography",
+  "ref": "w12t2",
+  "week": 12,
+  "week_title": "Geography · Module 12",
+  "title": "Worked examples and practice",
+  "minutes": 25,
+  "position": 2,
+  "has_rich_lesson": false
+ }
+]

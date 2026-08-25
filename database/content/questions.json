@@ -1,0 +1,674 @@
+[
+ {
+  "ref": "m1",
+  "subject_slug": "maths",
+  "exam_body": "WAEC",
+  "year": 2019,
+  "topic": "Logarithms",
+  "prompt": "Evaluate log₁₀ 25 + log₁₀ 4.",
+  "options": [
+   "1",
+   "2",
+   "10",
+   "100"
+  ],
+  "answer_index": 1,
+  "explanation": "log 25 + log 4 = log(25 × 4) = log 100 = 2."
+ },
+ {
+  "ref": "m2",
+  "subject_slug": "maths",
+  "exam_body": "JAMB",
+  "year": 2021,
+  "topic": "Number Bases",
+  "prompt": "Convert 45 in base 10 to base 2.",
+  "options": [
+   "101101₂",
+   "110101₂",
+   "101011₂",
+   "111001₂"
+  ],
+  "answer_index": 0,
+  "explanation": "45 = 32 + 8 + 4 + 1 = 101101 in base 2."
+ },
+ {
+  "ref": "m3",
+  "subject_slug": "maths",
+  "exam_body": "WAEC",
+  "year": 2020,
+  "topic": "Quadratic Equations",
+  "prompt": "Solve x² − 5x + 6 = 0.",
+  "options": [
+   "x = 1 or 6",
+   "x = 2 or 3",
+   "x = −2 or −3",
+   "x = 5 or 6"
+  ],
+  "answer_index": 1,
+  "explanation": "Factorising gives (x − 2)(x − 3) = 0, so x = 2 or x = 3."
+ },
+ {
+  "ref": "m4",
+  "subject_slug": "maths",
+  "exam_body": "JAMB",
+  "year": 2022,
+  "topic": "Indices",
+  "prompt": "Simplify 2³ × 2⁵ ÷ 2⁴.",
+  "options": [
+   "2²",
+   "2⁴",
+   "2⁶",
+   "2⁸"
+  ],
+  "answer_index": 1,
+  "explanation": "Add the indices being multiplied and subtract the divisor: 3 + 5 − 4 = 4, so 2⁴."
+ },
+ {
+  "ref": "m5",
+  "subject_slug": "maths",
+  "exam_body": "WAEC",
+  "year": 2018,
+  "topic": "Mensuration",
+  "prompt": "The area of a circle is 154 cm². Find its radius. (Take π = 22/7)",
+  "options": [
+   "7 cm",
+   "14 cm",
+   "3.5 cm",
+   "11 cm"
+  ],
+  "answer_index": 0,
+  "explanation": "πr² = 154 → r² = 154 × 7/22 = 49 → r = 7 cm."
+ },
+ {
+  "ref": "m6",
+  "subject_slug": "maths",
+  "exam_body": "JAMB",
+  "year": 2023,
+  "topic": "Statistics",
+  "prompt": "Find the median of 4, 8, 2, 10, 6.",
+  "options": [
+   "4",
+   "6",
+   "8",
+   "10"
+  ],
+  "answer_index": 1,
+  "explanation": "Arranged: 2, 4, 6, 8, 10. The middle value is 6."
+ },
+ {
+  "ref": "m7",
+  "subject_slug": "maths",
+  "exam_body": "WAEC",
+  "year": 2021,
+  "topic": "Variation",
+  "prompt": "If y varies inversely as x and y = 4 when x = 3, find y when x = 6.",
+  "options": [
+   "1",
+   "2",
+   "8",
+   "12"
+  ],
+  "answer_index": 1,
+  "explanation": "y = k/x → k = 12. When x = 6, y = 12/6 = 2."
+ },
+ {
+  "ref": "m8",
+  "subject_slug": "maths",
+  "exam_body": "JAMB",
+  "year": 2020,
+  "topic": "Trigonometry",
+  "prompt": "A ladder leans against a wall at 60° to the ground. If the ladder is 10 m long, how high up the wall does it reach?",
+  "options": [
+   "5 m",
+   "5√3 m",
+   "10√3 m",
+   "20 m"
+  ],
+  "answer_index": 1,
+  "explanation": "Height = 10 sin 60° = 10 × (√3/2) = 5√3 m ≈ 8.66 m."
+ },
+ {
+  "ref": "m9",
+  "subject_slug": "maths",
+  "exam_body": "WAEC",
+  "year": 2024,
+  "topic": "Probability",
+  "prompt": "A bag holds 3 red and 5 blue balls. What is the probability of picking a red ball?",
+  "options": [
+   "3/8",
+   "5/8",
+   "3/5",
+   "1/3"
+  ],
+  "answer_index": 0,
+  "explanation": "P(red) = number of red ÷ total = 3/8."
+ },
+ {
+  "ref": "m10",
+  "subject_slug": "maths",
+  "exam_body": "JAMB",
+  "year": 2025,
+  "topic": "Bearings",
+  "prompt": "A man walks 4 km north then 3 km east. How far is he from his starting point?",
+  "options": [
+   "5 km",
+   "7 km",
+   "1 km",
+   "12 km"
+  ],
+  "answer_index": 0,
+  "explanation": "Pythagoras: √(4² + 3²) = √25 = 5 km."
+ },
+ {
+  "ref": "e1",
+  "subject_slug": "english",
+  "exam_body": "WAEC",
+  "year": 2022,
+  "topic": "Concord",
+  "prompt": "Choose the correct option: Neither the students nor the teacher ___ present.",
+  "options": [
+   "were",
+   "was",
+   "are",
+   "have been"
+  ],
+  "answer_index": 1,
+  "explanation": "With \"neither…nor\", the verb agrees with the nearer subject — \"teacher\" is singular, so \"was\"."
+ },
+ {
+  "ref": "e2",
+  "subject_slug": "english",
+  "exam_body": "JAMB",
+  "year": 2021,
+  "topic": "Lexis",
+  "prompt": "Choose the word nearest in meaning to \"meticulous\".",
+  "options": [
+   "Careless",
+   "Thorough",
+   "Rapid",
+   "Doubtful"
+  ],
+  "answer_index": 1,
+  "explanation": "Meticulous means showing great attention to detail — thorough."
+ },
+ {
+  "ref": "e3",
+  "subject_slug": "english",
+  "exam_body": "WAEC",
+  "year": 2020,
+  "topic": "Figures of Speech",
+  "prompt": "\"The classroom was a market square.\" This is an example of:",
+  "options": [
+   "Simile",
+   "Metaphor",
+   "Hyperbole",
+   "Personification"
+  ],
+  "answer_index": 1,
+  "explanation": "It compares directly without \"like\" or \"as\", which makes it a metaphor."
+ },
+ {
+  "ref": "e4",
+  "subject_slug": "english",
+  "exam_body": "JAMB",
+  "year": 2023,
+  "topic": "Oral English",
+  "prompt": "Which word has a different vowel sound from the others?",
+  "options": [
+   "beat",
+   "seat",
+   "great",
+   "meat"
+  ],
+  "answer_index": 2,
+  "explanation": "\"Great\" has the /eɪ/ sound, while the others carry /iː/."
+ },
+ {
+  "ref": "e5",
+  "subject_slug": "english",
+  "exam_body": "WAEC",
+  "year": 2019,
+  "topic": "Tenses",
+  "prompt": "By the time we arrived, the film ___.",
+  "options": [
+   "has started",
+   "had started",
+   "was starting",
+   "starts"
+  ],
+  "answer_index": 1,
+  "explanation": "The past perfect \"had started\" shows an action completed before another past action."
+ },
+ {
+  "ref": "e6",
+  "subject_slug": "english",
+  "exam_body": "JAMB",
+  "year": 2024,
+  "topic": "Antonyms",
+  "prompt": "Choose the option opposite in meaning to \"frugal\".",
+  "options": [
+   "Thrifty",
+   "Extravagant",
+   "Modest",
+   "Prudent"
+  ],
+  "answer_index": 1,
+  "explanation": "Frugal means sparing with money; its opposite is extravagant."
+ },
+ {
+  "ref": "e7",
+  "subject_slug": "english",
+  "exam_body": "WAEC",
+  "year": 2023,
+  "topic": "Registers",
+  "prompt": "\"Adjournment\", \"plaintiff\" and \"bail\" belong to the register of:",
+  "options": [
+   "Medicine",
+   "Law",
+   "Farming",
+   "Banking"
+  ],
+  "answer_index": 1,
+  "explanation": "All three are courtroom terms — the register of law."
+ },
+ {
+  "ref": "e8",
+  "subject_slug": "english",
+  "exam_body": "JAMB",
+  "year": 2022,
+  "topic": "Word Classes",
+  "prompt": "In \"She sings beautifully\", the word \"beautifully\" is:",
+  "options": [
+   "An adjective",
+   "An adverb",
+   "A noun",
+   "A preposition"
+  ],
+  "answer_index": 1,
+  "explanation": "It modifies the verb \"sings\", so it is an adverb of manner."
+ },
+ {
+  "ref": "p1",
+  "subject_slug": "physics",
+  "exam_body": "WAEC",
+  "year": 2021,
+  "topic": "Electric Fields",
+  "prompt": "The unit of electric field intensity is:",
+  "options": [
+   "N/C",
+   "J/C",
+   "C/s",
+   "W/A"
+  ],
+  "answer_index": 0,
+  "explanation": "Field intensity is force per unit charge, giving newtons per coulomb."
+ },
+ {
+  "ref": "p2",
+  "subject_slug": "physics",
+  "exam_body": "JAMB",
+  "year": 2020,
+  "topic": "Motion",
+  "prompt": "A car accelerates uniformly from rest to 20 m/s in 5 s. Its acceleration is:",
+  "options": [
+   "2 m/s²",
+   "4 m/s²",
+   "5 m/s²",
+   "100 m/s²"
+  ],
+  "answer_index": 1,
+  "explanation": "a = (v − u)/t = (20 − 0)/5 = 4 m/s²."
+ },
+ {
+  "ref": "p3",
+  "subject_slug": "physics",
+  "exam_body": "WAEC",
+  "year": 2019,
+  "topic": "Waves",
+  "prompt": "A wave has frequency 50 Hz and wavelength 4 m. Its speed is:",
+  "options": [
+   "12.5 m/s",
+   "54 m/s",
+   "200 m/s",
+   "0.08 m/s"
+  ],
+  "answer_index": 2,
+  "explanation": "v = fλ = 50 × 4 = 200 m/s."
+ },
+ {
+  "ref": "p4",
+  "subject_slug": "physics",
+  "exam_body": "JAMB",
+  "year": 2023,
+  "topic": "Current Electricity",
+  "prompt": "Two 6 Ω resistors are connected in parallel. The effective resistance is:",
+  "options": [
+   "12 Ω",
+   "6 Ω",
+   "3 Ω",
+   "0.33 Ω"
+  ],
+  "answer_index": 2,
+  "explanation": "1/R = 1/6 + 1/6 = 2/6, so R = 3 Ω."
+ },
+ {
+  "ref": "p5",
+  "subject_slug": "physics",
+  "exam_body": "WAEC",
+  "year": 2022,
+  "topic": "Work & Energy",
+  "prompt": "A force of 20 N moves a body 5 m in its direction. The work done is:",
+  "options": [
+   "4 J",
+   "25 J",
+   "100 J",
+   "0.25 J"
+  ],
+  "answer_index": 2,
+  "explanation": "W = F × d = 20 × 5 = 100 J."
+ },
+ {
+  "ref": "p6",
+  "subject_slug": "physics",
+  "exam_body": "JAMB",
+  "year": 2024,
+  "topic": "Heat Energy",
+  "prompt": "The quantity of heat needed to change 1 kg of ice to water at 0°C is called:",
+  "options": [
+   "Heat capacity",
+   "Specific latent heat of fusion",
+   "Specific heat capacity",
+   "Thermal conductivity"
+  ],
+  "answer_index": 1,
+  "explanation": "A change of state at constant temperature is governed by latent heat — fusion for solid to liquid."
+ },
+ {
+  "ref": "p7",
+  "subject_slug": "physics",
+  "exam_body": "WAEC",
+  "year": 2025,
+  "topic": "Modern Physics",
+  "prompt": "Which particle has no charge?",
+  "options": [
+   "Proton",
+   "Electron",
+   "Neutron",
+   "Alpha particle"
+  ],
+  "answer_index": 2,
+  "explanation": "The neutron is electrically neutral; that is where its name comes from."
+ },
+ {
+  "ref": "p8",
+  "subject_slug": "physics",
+  "exam_body": "JAMB",
+  "year": 2021,
+  "topic": "Newton Laws",
+  "prompt": "A body of mass 5 kg experiences a force of 30 N. Its acceleration is:",
+  "options": [
+   "6 m/s²",
+   "150 m/s²",
+   "0.17 m/s²",
+   "35 m/s²"
+  ],
+  "answer_index": 0,
+  "explanation": "F = ma → a = F/m = 30/5 = 6 m/s²."
+ },
+ {
+  "ref": "c1",
+  "subject_slug": "chemistry",
+  "exam_body": "WAEC",
+  "year": 2020,
+  "topic": "Mole Concept",
+  "prompt": "How many moles are in 36 g of water? (H = 1, O = 16)",
+  "options": [
+   "1 mole",
+   "2 moles",
+   "18 moles",
+   "0.5 mole"
+  ],
+  "answer_index": 1,
+  "explanation": "Molar mass of H₂O = 18 g/mol, so 36 ÷ 18 = 2 moles."
+ },
+ {
+  "ref": "c2",
+  "subject_slug": "chemistry",
+  "exam_body": "JAMB",
+  "year": 2022,
+  "topic": "Redox",
+  "prompt": "The oxidation number of sulphur in H₂SO₄ is:",
+  "options": [
+   "+2",
+   "+4",
+   "+6",
+   "−2"
+  ],
+  "answer_index": 2,
+  "explanation": "2(+1) + S + 4(−2) = 0 → S = +6."
+ },
+ {
+  "ref": "c3",
+  "subject_slug": "chemistry",
+  "exam_body": "WAEC",
+  "year": 2023,
+  "topic": "Acids & Bases",
+  "prompt": "A solution with pH 3 is:",
+  "options": [
+   "Strongly basic",
+   "Weakly basic",
+   "Acidic",
+   "Neutral"
+  ],
+  "answer_index": 2,
+  "explanation": "Any pH below 7 is acidic; pH 3 is strongly so."
+ },
+ {
+  "ref": "c4",
+  "subject_slug": "chemistry",
+  "exam_body": "JAMB",
+  "year": 2021,
+  "topic": "Atomic Structure",
+  "prompt": "The electron configuration of an element with atomic number 11 is:",
+  "options": [
+   "2, 8, 1",
+   "2, 8, 3",
+   "2, 9",
+   "1, 8, 2"
+  ],
+  "answer_index": 0,
+  "explanation": "11 electrons fill as 2, 8, 1 — that element is sodium."
+ },
+ {
+  "ref": "c5",
+  "subject_slug": "chemistry",
+  "exam_body": "WAEC",
+  "year": 2019,
+  "topic": "Electrolysis",
+  "prompt": "During the electrolysis of acidified water, the gas liberated at the anode is:",
+  "options": [
+   "Hydrogen",
+   "Oxygen",
+   "Chlorine",
+   "Nitrogen"
+  ],
+  "answer_index": 1,
+  "explanation": "Oxidation happens at the anode, releasing oxygen; hydrogen appears at the cathode."
+ },
+ {
+  "ref": "c6",
+  "subject_slug": "chemistry",
+  "exam_body": "JAMB",
+  "year": 2024,
+  "topic": "Organic Chemistry",
+  "prompt": "The general formula of alkanes is:",
+  "options": [
+   "CₙH₂ₙ",
+   "CₙH₂ₙ₊₂",
+   "CₙH₂ₙ₋₂",
+   "CₙH₂ₙ₊₁"
+  ],
+  "answer_index": 1,
+  "explanation": "Alkanes are saturated hydrocarbons with the formula CₙH₂ₙ₊₂."
+ },
+ {
+  "ref": "c7",
+  "subject_slug": "chemistry",
+  "exam_body": "WAEC",
+  "year": 2025,
+  "topic": "Gas Laws",
+  "prompt": "The volume occupied by 1 mole of any gas at s.t.p. is:",
+  "options": [
+   "11.2 dm³",
+   "22.4 dm³",
+   "24 dm³",
+   "44.8 dm³"
+  ],
+  "answer_index": 1,
+  "explanation": "One mole of any gas occupies 22.4 dm³ at standard temperature and pressure."
+ },
+ {
+  "ref": "c8",
+  "subject_slug": "chemistry",
+  "exam_body": "JAMB",
+  "year": 2020,
+  "topic": "Chemical Equations",
+  "prompt": "Balance: __ H₂ + O₂ → __ H₂O. The coefficients are:",
+  "options": [
+   "1, 1",
+   "2, 2",
+   "2, 1 → 2",
+   "3, 1 → 3"
+  ],
+  "answer_index": 2,
+  "explanation": "2H₂ + O₂ → 2H₂O balances both hydrogen and oxygen atoms."
+ },
+ {
+  "ref": "b1",
+  "subject_slug": "biology",
+  "exam_body": "WAEC",
+  "year": 2021,
+  "topic": "Cell Biology",
+  "prompt": "The powerhouse of the cell is the:",
+  "options": [
+   "Ribosome",
+   "Mitochondrion",
+   "Nucleus",
+   "Golgi body"
+  ],
+  "answer_index": 1,
+  "explanation": "Mitochondria carry out aerobic respiration, releasing the cell energy as ATP."
+ },
+ {
+  "ref": "b2",
+  "subject_slug": "biology",
+  "exam_body": "JAMB",
+  "year": 2022,
+  "topic": "Genetics",
+  "prompt": "A cross between two heterozygous tall plants (Tt × Tt) gives a phenotypic ratio of:",
+  "options": [
+   "1 : 1",
+   "3 : 1",
+   "9 : 3 : 3 : 1",
+   "2 : 1"
+  ],
+  "answer_index": 1,
+  "explanation": "A monohybrid cross of two heterozygotes gives 3 tall to 1 short."
+ },
+ {
+  "ref": "b3",
+  "subject_slug": "biology",
+  "exam_body": "WAEC",
+  "year": 2020,
+  "topic": "Nutrition",
+  "prompt": "Photosynthesis takes place mainly in the:",
+  "options": [
+   "Root hair",
+   "Palisade mesophyll",
+   "Xylem vessel",
+   "Stomata"
+  ],
+  "answer_index": 1,
+  "explanation": "Palisade mesophyll cells are packed with chloroplasts near the leaf surface."
+ },
+ {
+  "ref": "b4",
+  "subject_slug": "biology",
+  "exam_body": "JAMB",
+  "year": 2023,
+  "topic": "Transport",
+  "prompt": "The blood vessel that carries oxygenated blood from the lungs to the heart is the:",
+  "options": [
+   "Pulmonary artery",
+   "Pulmonary vein",
+   "Aorta",
+   "Vena cava"
+  ],
+  "answer_index": 1,
+  "explanation": "The pulmonary vein is the exception — a vein carrying oxygenated blood."
+ },
+ {
+  "ref": "b5",
+  "subject_slug": "biology",
+  "exam_body": "WAEC",
+  "year": 2024,
+  "topic": "Excretion",
+  "prompt": "The functional unit of the kidney is the:",
+  "options": [
+   "Neuron",
+   "Nephron",
+   "Alveolus",
+   "Villus"
+  ],
+  "answer_index": 1,
+  "explanation": "Each kidney holds about a million nephrons, where filtration happens."
+ },
+ {
+  "ref": "b6",
+  "subject_slug": "biology",
+  "exam_body": "JAMB",
+  "year": 2019,
+  "topic": "Ecology",
+  "prompt": "In a food chain, green plants are described as:",
+  "options": [
+   "Primary consumers",
+   "Producers",
+   "Decomposers",
+   "Secondary consumers"
+  ],
+  "answer_index": 1,
+  "explanation": "They manufacture their own food through photosynthesis, so they are producers."
+ },
+ {
+  "ref": "b7",
+  "subject_slug": "biology",
+  "exam_body": "WAEC",
+  "year": 2022,
+  "topic": "Respiration",
+  "prompt": "The end product of anaerobic respiration in muscles is:",
+  "options": [
+   "Ethanol",
+   "Lactic acid",
+   "Carbon dioxide only",
+   "Glucose"
+  ],
+  "answer_index": 1,
+  "explanation": "Muscle cells short of oxygen convert pyruvate to lactic acid — the reason for cramp."
+ },
+ {
+  "ref": "b8",
+  "subject_slug": "biology",
+  "exam_body": "JAMB",
+  "year": 2025,
+  "topic": "Classification",
+  "prompt": "Organisms that make their own food are described as:",
+  "options": [
+   "Heterotrophic",
+   "Autotrophic",
+   "Saprophytic",
+   "Parasitic"
+  ],
+  "answer_index": 1,
+  "explanation": "Autotrophs synthesise their own organic food from simple inorganic substances."
+ }
+]

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reset the app · ClassMate 9ja</title>
+<meta name="theme-color" content="#008751">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/layout.css">
+<script>
+  try {
+    var t = JSON.parse(localStorage.getItem('cm9ja:theme') || 'null')
+      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<main class="auth-main" style="min-height:100vh;align-items:flex-start;padding-top:var(--s-12)">
+  <div class="auth-card" style="max-width:520px">
+
+    <a class="brand-mark" href="index.html" style="margin-bottom:var(--s-8)">
+      <span class="glyph">C</span>ClassMate&nbsp;<span class="naija">9ja</span>
+    </a>
+
+    <h1 class="auth-title">Reset the app on this device</h1>
+    <p class="auth-sub">
+      Use this if a screen looks blank or stale. It removes the offline cache and
+      the installed service worker, so the next load fetches everything fresh from
+      the server.
+    </p>
+
+    <div class="stack gap-4" id="log" style="margin-bottom:var(--s-6)"></div>
+
+    <div class="stack gap-3">
+      <button class="btn btn-primary btn-lg btn-block" id="cacheBtn">
+        Clear cache and reload
+      </button>
+      <button class="btn btn-secondary btn-block" id="allBtn">
+        Clear cache <b>and</b> all demo data
+      </button>
+      <a class="btn btn-ghost btn-block" href="index.html">Back to the homepage</a>
+    </div>
+
+    <div class="alert alert-info" style="margin-top:var(--s-6)">
+      <span>
+        <b>Clear cache</b> keeps your account, progress and downloads — it only
+        drops the copies of the app files held on this device.
+        <b>Clear all demo data</b> also wipes accounts, progress, marking and
+        settings, putting the demo back to a fresh install.
+      </span>
+    </div>
+  </div>
+</main>
+
+<script>
+/* Deliberately a plain script, not a module: this page has to work even when
+   the thing that is broken is the cached module graph itself. */
+const log = document.getElementById('log');
+
+function say(text, tone) {
+  const row = document.createElement('div');
+  row.className = 'row gap-3 t-sm';
+  row.innerHTML = '<span>' + (tone === 'ok' ? '✅' : '⏳') + '</span><span>' + text + '</span>';
+  log.appendChild(row);
+}
+
+async function clearCaches() {
+  if (!('caches' in window)) return say('No cache API on this browser — nothing to clear', 'ok');
+  const keys = await caches.keys();
+  await Promise.all(keys.map((k) => caches.delete(k)));
+  say('Deleted ' + keys.length + ' cache' + (keys.length === 1 ? '' : 's'), 'ok');
+}
+
+async function unregisterWorkers() {
+  if (!('serviceWorker' in navigator)) return say('No service worker on this browser', 'ok');
+  const regs = await navigator.serviceWorker.getRegistrations();
+  await Promise.all(regs.map((r) => r.unregister()));
+  say('Unregistered ' + regs.length + ' service worker' + (regs.length === 1 ? '' : 's'), 'ok');
+}
+
+function clearData() {
+  let n = 0;
+  Object.keys(localStorage).forEach((k) => {
+    if (k.indexOf('cm9ja:') === 0) { localStorage.removeItem(k); n += 1; }
+  });
+  try { sessionStorage.clear(); } catch (e) {}
+  say('Cleared ' + n + ' stored item' + (n === 1 ? '' : 's'), 'ok');
+}
+
+async function run(alsoData) {
+  document.getElementById('cacheBtn').disabled = true;
+  document.getElementById('allBtn').disabled = true;
+  log.innerHTML = '';
+  await unregisterWorkers();
+  await clearCaches();
+  if (alsoData) clearData();
+  say('Done — reloading with a clean copy…', 'ok');
+  /* Cache-bust the navigation itself so no intermediate proxy hands back the
+     old index.html either. */
+  setTimeout(function () {
+    location.href = 'index.html?fresh=' + Date.now();
+  }, 900);
+}
+
+document.getElementById('cacheBtn').addEventListener('click', function () { run(false); });
+document.getElementById('allBtn').addEventListener('click', function () { run(true); });
+</script>
+</body>
+</html>

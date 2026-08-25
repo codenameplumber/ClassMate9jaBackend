@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Set up your account · ClassMate 9ja</title>
+<meta name="theme-color" content="#008751">
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/layout.css">
+<style>
+  .onb { min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); }
+  .onb-top {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: var(--bg-elevated); border-bottom: 1px solid var(--border);
+    padding: var(--s-4) 0;
+  }
+  .onb-body { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: var(--s-8) var(--s-5); }
+  .onb-card { width: 100%; max-width: 560px; }
+  .onb-foot {
+    position: sticky; bottom: 0;
+    background: var(--bg-elevated); border-top: 1px solid var(--border);
+    padding: var(--s-4) 0; padding-bottom: calc(var(--s-4) + env(safe-area-inset-bottom));
+  }
+  .onb h1 { font-size: var(--text-2xl); margin-bottom: var(--s-2); }
+  .onb .q-sub { color: var(--text-muted); font-size: var(--text-sm); margin-bottom: var(--s-6); }
+  .level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-3); }
+  .subject-row { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
+  @media (min-width: 560px) { .subject-row { grid-template-columns: 1fr 1fr; } }
+</style>
+<script>
+  try {
+    var t = JSON.parse(localStorage.getItem('cm9ja:theme') || 'null')
+      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<div class="onb">
+
+  <header class="onb-top">
+    <div class="container row between gap-4">
+      <a class="brand-mark" href="../index.html">
+        <span class="glyph">C</span>ClassMate&nbsp;<span class="naija">9ja</span>
+      </a>
+      <button class="btn btn-ghost btn-sm" id="skipBtn">Skip for now</button>
+    </div>
+    <div class="container" style="margin-top:var(--s-3)">
+      <div class="steps" id="stepDots"></div>
+    </div>
+  </header>
+
+  <main class="onb-body">
+    <div class="onb-card" id="wizard">
+      <!-- rendered by onboarding.js -->
+    </div>
+  </main>
+
+  <footer class="onb-foot">
+    <div class="container row between gap-3">
+      <button class="btn btn-secondary" id="backBtn">
+        <i data-icon="arrowL" data-size="16"></i> Back
+      </button>
+      <div class="t-xs subtle" id="stepCount">Step 1 of 4</div>
+      <button class="btn btn-primary" id="nextBtn">
+        Continue <i data-icon="arrowR" data-size="16"></i>
+      </button>
+    </div>
+  </footer>
+</div>
+
+<script type="module" src="../js/pages/onboarding.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+/* ==========================================================================
+   ClassMate 9ja — Reset, base typography, utilities
+   No external font files: we ride the system stack so first paint costs
+   0 bytes of network. Inter is used only if the device already has it.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--topbar-h) + var(--s-4));
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
+
+input, button, textarea, select { font: inherit; color: inherit; }
+
+button { background: none; border: 0; cursor: pointer; }
+
+a { color: var(--text-brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+ul, ol { list-style: none; padding: 0; }
+
+h1, h2, h3, h4, h5 {
+  line-height: var(--leading-tight);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+h5 { font-size: var(--text-md); }
+
+p { text-wrap: pretty; }
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+::selection { background: var(--green-200); color: var(--ink-900); }
+
+/* Scrollbars — thin, unobtrusive, themed */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--r-full);
+}
+*::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Layout helpers
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--s-5);
+}
+
+.stack     { display: flex; flex-direction: column; }
+.row       { display: flex; flex-direction: row; align-items: center; }
+.wrap      { flex-wrap: wrap; }
+.between   { justify-content: space-between; }
+.center    { justify-content: center; }
+.items-start  { align-items: flex-start; }
+.items-center { align-items: center; }
+.items-end    { align-items: flex-end; }
+.grow      { flex: 1 1 auto; min-width: 0; }
+.shrink-0  { flex-shrink: 0; }
+
+.gap-1 { gap: var(--s-1); }
+.gap-2 { gap: var(--s-2); }
+.gap-3 { gap: var(--s-3); }
+.gap-4 { gap: var(--s-4); }
+.gap-5 { gap: var(--s-5); }
+.gap-6 { gap: var(--s-6); }
+.gap-8 { gap: var(--s-8); }
+
+.grid { display: grid; gap: var(--s-4); }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+@media (max-width: 900px) {
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: minmax(0, 1fr); }
+  .grid-2.keep-2, .grid-4.keep-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.section { padding-block: var(--s-20); }
+@media (max-width: 720px) { .section { padding-block: var(--s-12); } }
+
+/* ==========================================================================
+   Type utilities
+   ========================================================================== */
+
+.t-2xs { font-size: var(--text-2xs); }
+.t-xs  { font-size: var(--text-xs); }
+.t-sm  { font-size: var(--text-sm); }
+.t-lg  { font-size: var(--text-lg); }
+.t-xl  { font-size: var(--text-xl); }
+.t-2xl { font-size: var(--text-2xl); }
+
+.fw-medium   { font-weight: var(--weight-medium); }
+.fw-semibold { font-weight: var(--weight-semibold); }
+.fw-bold     { font-weight: var(--weight-bold); }
+.fw-black    { font-weight: var(--weight-black); }
+
+.muted   { color: var(--text-muted); }
+.subtle  { color: var(--text-subtle); }
+.brand   { color: var(--text-brand); }
+.danger-text  { color: var(--danger); }
+.success-text { color: var(--success); }
+.warning-text { color: var(--warning-600, var(--amber-600)); }
+
+.upper { text-transform: uppercase; letter-spacing: .08em; }
+.center-text { text-align: center; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+.clamp-1, .clamp-2, .clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.clamp-1 { -webkit-line-clamp: 1; }
+.clamp-2 { -webkit-line-clamp: 2; }
+.clamp-3 { -webkit-line-clamp: 3; }
+
+/* ==========================================================================
+   Misc utilities
+   ========================================================================== */
+
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: var(--s-4); top: -60px;
+  background: var(--primary); color: var(--on-primary);
+  padding: var(--s-2) var(--s-4); border-radius: var(--r-sm);
+  z-index: var(--z-toast); transition: top var(--dur) var(--ease);
+}
+.skip-link:focus { top: var(--s-4); }
+
+.divider { height: 1px; background: var(--border); border: 0; }
+.mt-auto { margin-top: auto; }
+.w-full  { width: 100%; }
+.full-bleed-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 720px) { .hide-mobile { display: none !important; } }
+@media (min-width: 721px) { .hide-desktop { display: none !important; } }

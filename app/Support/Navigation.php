@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Support;
+
+use App\Models\Submission;
+use Illuminate\Support\Facades\Auth;
+
+/**
+ * The sidebar and mobile tab bar, defined once per role.
+ *
+ * This is the server-side twin of the PWA's shell.js: same groups, same
+ * labels, same order, so a teacher moving between the two never has to
+ * relearn where anything lives.
+ */
+class Navigation
+{
+    public static function forRole(string $role): array
+    {
+        return match ($role) {
+            'teacher' => [
+                ['title' => 'Class', 'items' => [
+                    ['route' => 'teacher.dashboard', 'label' => 'Dashboard', 'emoji' => '\u{1F3E0}'],
+                    ['route' => 'teacher.classes', 'label' => 'My classes', 'emoji' => '\u{1F465}'],
+                    ['route' => 'teacher.assignments', 'label' => 'Assignments', 'emoji' => '\u{1F4CB}'],
+                ]],
+                ['title' => 'Marking', 'items' => [
+                    ['route' => 'teacher.marking', 'label' => 'Marking queue', 'emoji' => '\u{270D}\u{FE0F}',
+                     'badge' => static::pendingCount()],
+                    ['route' => 'teacher.reports', 'label' => 'Reports', 'emoji' => '\u{1F4CA}'],
+                ]],
+            ],
+            'parent' => [
+                ['title' => 'My child', 'items' => [
+                    ['route' => 'parent.dashboard', 'label' => 'Dashboard', 'emoji' => '\u{1F3E0}'],
+                    ['route' => 'parent.report', 'label' => 'Weekly report', 'emoji' => '\u{1F4C4}'],
+                ]],
+            ],
+            'admin' => [
+                ['title' => 'Platform', 'items' => [
+                    ['route' => 'admin.dashboard', 'label' => 'Overview', 'emoji' => '\u{1F3E0}'],
+                    ['route' => 'admin.content', 'label' => 'Curriculum', 'emoji' => '\u{1F4DA}'],
+                    ['route' => 'admin.people', 'label' => 'People', 'emoji' => '\u{1F465}'],
+                ]],
+            ],
+            default => [
+                ['title' => 'Learn', 'items' => [
+                    ['url' => '/app/student/dashboard.html', 'route' => 'never', 'label' => 'Open my app', 'emoji' => '\u{1F4DA}'],
+                ]],
+            ],
+        };
+    }
+
+    public static function tabsForRole(string $role): array
+    {
+        return match ($role) {
+            'teacher' => [
+                ['route' => 'teacher.dashboard', 'label' => 'Home', 'emoji' => '\u{1F3E0}'],
+                ['route' => 'teacher.classes', 'label' => 'Classes', 'emoji' => '\u{1F465}'],
+                ['route' => 'teacher.marking', 'label' => 'Marking', 'emoji' => '\u{270D}\u{FE0F}'],
+                ['route' => 'teacher.assignments', 'label' => 'Work', 'emoji' => '\u{1F4CB}'],
+            ],
+            'parent' => [
+                ['route' => 'parent.dashboard', 'label' => 'Home', 'emoji' => '\u{1F3E0}'],
+                ['route' => 'parent.report', 'label' => 'Report', 'emoji' => '\u{1F4C4}'],
+            ],
+            'admin' => [
+                ['route' => 'admin.dashboard', 'label' => 'Home', 'emoji' => '\u{1F3E0}'],
+                ['route' => 'admin.content', 'label' => 'Content', 'emoji' => '\u{1F4DA}'],
+                ['route' => 'admin.people', 'label' => 'People', 'emoji' => '\u{1F465}'],
+            ],
+            default => [],
+        };
+    }
+
+    /** Scripts waiting on the signed-in teacher, for the sidebar badge. */
+    public static function pendingCount(): ?int
+    {
+        $user = Auth::user();
+        if (! $user || ! $user->isTeacher()) {
+            return null;
+        }
+
+        $count = Submission::whereHas('assignment.classroom', fn ($q) => $q->where('teacher_id', $user->id))
+            ->where('status', '!=', 'approved')
+            ->count();
+
+        return $count ?: null;
+    }
+}

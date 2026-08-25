@@ -1,0 +1,134 @@
+[
+ {
+  "slug": "maths",
+  "name": "Mathematics",
+  "short_name": "Maths",
+  "emoji": "📐",
+  "tone": "brand",
+  "is_core": true,
+  "pack_mb": 38,
+  "topic_count": 64,
+  "blurb": "Numbers, algebra, geometry, statistics — the subject that decides admission."
+ },
+ {
+  "slug": "english",
+  "name": "English Language",
+  "short_name": "English",
+  "emoji": "📖",
+  "tone": "sky",
+  "is_core": true,
+  "pack_mb": 31,
+  "topic_count": 58,
+  "blurb": "Comprehension, lexis and structure, oral English, summary and essay."
+ },
+ {
+  "slug": "physics",
+  "name": "Physics",
+  "short_name": "Physics",
+  "emoji": "⚡",
+  "tone": "amber",
+  "is_core": true,
+  "pack_mb": 34,
+  "topic_count": 52,
+  "blurb": "Mechanics, waves, electricity, modern physics — with worked calculations."
+ },
+ {
+  "slug": "chemistry",
+  "name": "Chemistry",
+  "short_name": "Chemistry",
+  "emoji": "🧪",
+  "tone": "violet",
+  "is_core": true,
+  "pack_mb": 33,
+  "topic_count": 49,
+  "blurb": "Mole concept, organic chemistry, reactions and practical chemistry."
+ },
+ {
+  "slug": "biology",
+  "name": "Biology",
+  "short_name": "Biology",
+  "emoji": "🧬",
+  "tone": "brand",
+  "is_core": true,
+  "pack_mb": 36,
+  "topic_count": 55,
+  "blurb": "Cells, ecology, genetics, human physiology and plant biology."
+ },
+ {
+  "slug": "economics",
+  "name": "Economics",
+  "short_name": "Economics",
+  "emoji": "💹",
+  "tone": "clay",
+  "is_core": true,
+  "pack_mb": 24,
+  "topic_count": 42,
+  "blurb": "Demand and supply, national income, money and the Nigerian economy."
+ },
+ {
+  "slug": "government",
+  "name": "Government",
+  "short_name": "Government",
+  "emoji": "🏛️",
+  "tone": "sky",
+  "is_core": true,
+  "pack_mb": 22,
+  "topic_count": 40,
+  "blurb": "Constitutions, arms of government, political parties and Nigerian history."
+ },
+ {
+  "slug": "literature",
+  "name": "Literature-in-English",
+  "short_name": "Literature",
+  "emoji": "🎭",
+  "tone": "violet",
+  "is_core": true,
+  "pack_mb": 27,
+  "topic_count": 36,
+  "blurb": "Prose, drama, poetry, literary devices and the current WAEC texts."
+ },
+ {
+  "slug": "agric",
+  "name": "Agricultural Science",
+  "short_name": "Agric",
+  "emoji": "🌾",
+  "tone": "brand",
+  "is_core": true,
+  "pack_mb": 21,
+  "topic_count": 38,
+  "blurb": "Crop and animal production, soil science, farm management, agric economics."
+ },
+ {
+  "slug": "civic",
+  "name": "Civic Education",
+  "short_name": "Civic",
+  "emoji": "⚖️",
+  "tone": "amber",
+  "is_core": false,
+  "pack_mb": 14,
+  "topic_count": 28,
+  "blurb": "Citizenship, human rights, values and national consciousness."
+ },
+ {
+  "slug": "furthermaths",
+  "name": "Further Mathematics",
+  "short_name": "F. Maths",
+  "emoji": "📊",
+  "tone": "clay",
+  "is_core": false,
+  "pack_mb": 29,
+  "topic_count": 44,
+  "blurb": "Matrices, calculus, vectors and statistics for science students."
+ },
+ {
+  "slug": "geography",
+  "name": "Geography",
+  "short_name": "Geography",
+  "emoji": "🗺️",
+  "tone": "sky",
+  "is_core": false,
+  "pack_mb": 26,
+  "topic_count": 41,
+  "blurb": "Map reading, landforms, climate and the geography of Nigeria."
+ }
+]
