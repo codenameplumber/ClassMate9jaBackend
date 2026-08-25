@@ -29,19 +29,35 @@ class SendWeeklyReports extends Command
             return self::SUCCESS;
         }
 
+        // Every provider rate-limits, and a school with 500 linked parents would
+        // trip that on the first Sunday. Stagger the queue so the worker releases
+        // them at a pace any mailer accepts, instead of firing hundreds at once
+        // and losing most of them to a 550.
+        $perMinute = max(1, (int) config('mail.throttle_per_minute', 30));
+        $spacing = 60 / $perMinute;
+        $queued = 0;
+
         foreach ($links as $link) {
             if (! $link->parent?->email || ! $link->student) {
                 continue;
             }
 
-            Mail::to($link->parent)->queue(
+            Mail::to($link->parent)->later(
+                now()->addSeconds((int) round($queued * $spacing)),
                 new WeeklyReport($link->student, ChildSummary::for($link->student))
             );
 
-            $this->line("  queued for {$link->parent->email} about {$link->student->name}");
+            $queued++;
+
+            if ($this->output->isVerbose()) {
+                $this->line("  queued for {$link->parent->email} about {$link->student->name}");
+            }
         }
 
-        $this->info($links->count() . ' reports queued.');
+        $minutes = (int) ceil($queued / $perMinute);
+
+        $this->info("{$queued} reports queued, released at {$perMinute}/minute — "
+            . "about {$minutes} " . str('minute')->plural($minutes) . ' to clear.');
 
         return self::SUCCESS;
     }

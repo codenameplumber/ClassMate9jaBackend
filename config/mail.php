@@ -110,6 +110,19 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Outgoing rate limit
+    |--------------------------------------------------------------------------
+    |
+    | How many messages a bulk send releases per minute. Every provider
+    | rate-limits; Mailtrap's free sandbox is stricter than most. Bulk jobs
+    | space themselves by this rather than firing everything at once.
+    |
+    */
+
+    'throttle_per_minute' => (int) env('MAIL_THROTTLE_PER_MINUTE', 30),
+
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
