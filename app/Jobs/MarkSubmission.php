@@ -21,7 +21,13 @@ class MarkSubmission implements ShouldQueue
 
     public int $tries = 2;
 
-    public function __construct(public int $submissionId) {}
+    public function __construct(public int $submissionId)
+    {
+        // Marking sits on its own queue, away from mail. A student who
+        // submits on a Sunday evening must not end up behind a weekly-report
+        // blast that is deliberately released one email every twelve seconds.
+        $this->onQueue('marking');
+    }
 
     public function handle(Marker $marker): void
     {
@@ -89,5 +95,18 @@ class MarkSubmission implements ShouldQueue
             'needs_review' => $needsReview,
             'status' => 'marked',
         ]);
+    }
+
+    /**
+     * If every attempt is exhausted — a dead API key, or a worker killed
+     * mid-job by a platform runtime limit — the script must not be left
+     * sitting in 'marking' where nothing shows it to anyone. It goes back to
+     * the teacher's review queue, which is where an unmarked script belongs.
+     */
+    public function failed(?\Throwable $e): void
+    {
+        Submission::where('id', $this->submissionId)
+            ->where('status', 'marking')
+            ->update(['status' => 'submitted', 'needs_review' => true]);
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Assignment;
+use App\Models\Question;
 use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -49,6 +50,124 @@ class StudentApiTest extends TestCase
             'email_verified_at' => now(),
             'onboarded_at' => now(),
         ]);
+    }
+
+    /* ----------------------------------------------- the past-question bank */
+
+    /**
+     * Until this shipped, the device practised against a 42-item bank compiled
+     * into js/data/questions.js and the `questions` table was invisible to the
+     * student app. Anything the server generates has to arrive here or it may
+     * as well not exist.
+     */
+    public function test_the_bootstrap_ships_the_past_question_bank(): void
+    {
+        $student = $this->student();
+        $subjectIds = $student->subjects()->pluck('subjects.id');
+
+        $expected = Question::whereIn('subject_id', $subjectIds)
+            ->where('level', $student->level)
+            ->count();
+
+        $this->assertGreaterThan(0, $expected, 'The seeded student has no past questions to serve.');
+
+        $response = $this->withToken($this->token())->getJson('/api/bootstrap');
+
+        $response->assertOk();
+        $this->assertCount($expected, $response->json('questions'));
+    }
+
+    /**
+     * A student practises their own year, not somebody else's.
+     *
+     * The same question is written out once per level a subject is taught at,
+     * so without scoping an SS1 student would be handed the SS3 bank too --
+     * wrong on the screen, and paid for by the megabyte on a phone.
+     */
+    public function test_the_bank_is_scoped_to_the_students_own_level(): void
+    {
+        $student = $this->student();
+
+        $response = $this->withToken($this->token())->getJson('/api/bootstrap');
+
+        $this->assertSame($student->level, $response->json('level'));
+
+        $refs = collect($response->json('questions'))->pluck('id');
+        $this->assertNotEmpty($refs);
+
+        $levels = Question::whereIn('ref', $refs)->pluck('level')->unique();
+
+        $this->assertSame([$student->level], $levels->values()->all());
+    }
+
+    public function test_lessons_are_scoped_to_the_students_own_level(): void
+    {
+        $student = $this->student();
+
+        $response = $this->withToken($this->token())->getJson('/api/bootstrap');
+
+        $subjects = collect($response->json('subjects'));
+
+        $this->assertNotEmpty($subjects, 'The student received no subjects at all.');
+
+        // A ref is unique inside one subject at one level, so the same ref
+        // appearing twice within a subject means two years were merged.
+        foreach ($subjects as $subject) {
+            $refs = collect($subject['topics'])->pluck('ref');
+
+            $this->assertNotEmpty($refs, "{$subject['slug']} arrived with no topics.");
+
+            $this->assertSame(
+                $refs->unique()->count(),
+                $refs->count(),
+                "{$subject['slug']} sent the same topic ref twice — two levels were merged."
+            );
+        }
+
+        // And the topics really are the student's own year.
+        $sent = $subjects->flatMap(fn ($s) => collect($s['topics'])->pluck('ref'))->unique();
+
+        $wrongLevel = \App\Models\Topic::whereIn('ref', $sent)
+            ->where('level', '!=', $student->level)
+            ->whereIn('subject_id', $student->subjects()->pluck('subjects.id'))
+            ->count();
+
+        $this->assertGreaterThan(0, $wrongLevel, 'Other levels do not exist, so this proves nothing.');
+    }
+
+    /** The device reads this shape directly, so it is a contract, not a detail. */
+    public function test_a_past_question_arrives_in_the_shape_the_device_expects(): void
+    {
+        $response = $this->withToken($this->token())->getJson('/api/bootstrap');
+
+        $question = $response->json('questions.0');
+
+        $this->assertSame(
+            ['id', 'subject', 'body', 'year', 'topic', 'q', 'options', 'answer', 'why'],
+            array_keys($question)
+        );
+
+        $this->assertIsArray($question['options']);
+        $this->assertIsInt($question['answer']);
+
+        // A question whose answer points past its own options marks a correct
+        // student wrong, which is the one failure a practice bank cannot have.
+        $this->assertArrayHasKey($question['answer'], $question['options']);
+    }
+
+    public function test_the_bank_only_covers_the_subjects_the_student_takes(): void
+    {
+        $student = $this->student();
+        $mine = $student->subjects()->pluck('slug')->all();
+
+        $response = $this->withToken($this->token())->getJson('/api/bootstrap');
+
+        $served = collect($response->json('questions'))->pluck('subject')->unique()->all();
+
+        $this->assertEmpty(
+            array_diff($served, $mine),
+            'The bank leaked questions for a subject this student is not enrolled in.'
+        );
     }
 
     /* ------------------------------------------------------ the classwork loop */

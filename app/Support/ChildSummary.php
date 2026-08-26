@@ -25,10 +25,16 @@ class ChildSummary
         $minutes = $sessions->isNotEmpty() ? (int) $sessions->sum('minutes') : (int) array_sum($week);
 
         if ($sessions->isNotEmpty()) {
-            $week = collect(range(0, 6))->map(function ($i) use ($sessions) {
+            // occurred_on is cast to a Carbon date, so grouping has to be done on
+            // the formatted string. Comparing the Carbon instance to a date
+            // string silently matches nothing, which showed up as a parent
+            // report reading "249 minutes" and "0 of 7 days studied" at once.
+            $byDay = $sessions->groupBy(fn ($session) => $session->occurred_on->toDateString());
+
+            $week = collect(range(0, 6))->map(function ($i) use ($byDay) {
                 $day = now()->startOfWeek()->addDays($i)->toDateString();
 
-                return (int) $sessions->where('occurred_on', $day)->sum('minutes');
+                return (int) ($byDay[$day] ?? collect())->sum('minutes');
             })->all();
         }
 

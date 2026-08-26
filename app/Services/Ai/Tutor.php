@@ -2,12 +2,12 @@
 
 namespace App\Services\Ai;
 
-use Anthropic\Client;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * The AI tutor, answered by Claude.
+ * The AI tutor, server side.
  *
  * The device already ships a rule-based tutor that works in flight mode. This
  * is the online tier: with network, the question comes here and gets a real
@@ -22,7 +22,9 @@ class Tutor
 {
     public function __construct(
         private readonly ?string $key,
+        private readonly string $baseUrl,
         private readonly string $model,
+        private readonly int $timeout = 45,
     ) {}
 
     public function isConfigured(): bool
@@ -75,34 +77,33 @@ class Tutor
         GUIDE;
 
         try {
-            $message = (new Client(apiKey: $this->key))->messages->create(
-                model: $this->model,
-                maxTokens: 1200,
-                // Identical for every student on this topic, so it caches.
-                system: [
-                    ['type' => 'text', 'text' => $system, 'cacheControl' => ['type' => 'ephemeral']],
-                ],
-                messages: [['role' => 'user', 'content' => $question]],
-            );
+            $response = Http::withToken($this->key)
+                ->timeout($this->timeout)
+                ->acceptJson()
+                ->post("{$this->baseUrl}/chat/completions", [
+                    'model' => $this->model,
+                    'temperature' => 0.5,
+                    'max_tokens' => 700,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $system],
+                        ['role' => 'user', 'content' => $question],
+                    ],
+                ]);
 
-            if ($message->stopReason === 'refusal') {
-                Log::info('Tutor declined a question');
+            if ($response->failed()) {
+                Log::warning('Tutor call failed', [
+                    'status' => $response->status(),
+                    'body' => str($response->body())->limit(400),
+                ]);
 
                 return null;
             }
 
-            $reply = '';
-            foreach ($message->content as $block) {
-                if (($block->type ?? null) === 'text') {
-                    $reply .= $block->text;
-                }
-            }
-
-            $reply = trim($reply);
+            $reply = trim((string) data_get($response->json(), 'choices.0.message.content'));
 
             return $reply !== '' ? $reply : null;
         } catch (\Throwable $e) {
-            Log::warning('Tutor call failed', ['message' => $e->getMessage()]);
+            Log::warning('Tutor call threw', ['message' => $e->getMessage()]);
 
             return null;
         }

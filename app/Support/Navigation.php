@@ -38,13 +38,21 @@ class Navigation
             'admin' => [
                 ['title' => 'Platform', 'items' => [
                     ['route' => 'admin.dashboard', 'label' => 'Overview', 'emoji' => '\u{1F3E0}'],
-                    ['route' => 'admin.content', 'label' => 'Curriculum', 'emoji' => '\u{1F4DA}'],
-                    ['route' => 'admin.people', 'label' => 'People', 'emoji' => '\u{1F465}'],
+                ]],
+                ['title' => 'Curriculum', 'items' => [
+                    ['route' => 'admin.courses', 'label' => 'Courses', 'emoji' => '\u{1F4D8}'],
+                    ['route' => 'admin.content', 'label' => 'Lessons', 'emoji' => '\u{1F4DA}'],
+                ]],
+                ['title' => 'People', 'items' => [
+                    ['route' => 'admin.teachers', 'label' => 'Teachers', 'emoji' => '\u{1F9D1}\u{200D}\u{1F3EB}',
+                     'badge' => static::pendingTeacherCount()],
+                    ['route' => 'admin.students', 'label' => 'Students', 'emoji' => '\u{1F393}'],
+                    ['route' => 'admin.people', 'label' => 'Everyone', 'emoji' => '\u{1F465}'],
                 ]],
             ],
             default => [
                 ['title' => 'Learn', 'items' => [
-                    ['url' => '/app/student/dashboard.html', 'route' => 'never', 'label' => 'Open my app', 'emoji' => '\u{1F4DA}'],
+                    ['route' => 'learn.screen', 'params' => 'dashboard', 'label' => 'Open my app', 'emoji' => '\u{1F4DA}'],
                 ]],
             ],
         };
@@ -65,11 +73,26 @@ class Navigation
             ],
             'admin' => [
                 ['route' => 'admin.dashboard', 'label' => 'Home', 'emoji' => '\u{1F3E0}'],
-                ['route' => 'admin.content', 'label' => 'Content', 'emoji' => '\u{1F4DA}'],
-                ['route' => 'admin.people', 'label' => 'People', 'emoji' => '\u{1F465}'],
+                ['route' => 'admin.courses', 'label' => 'Courses', 'emoji' => '\u{1F4D8}'],
+                ['route' => 'admin.teachers', 'label' => 'Teachers', 'emoji' => '\u{1F9D1}\u{200D}\u{1F3EB}'],
+                ['route' => 'admin.students', 'label' => 'Students', 'emoji' => '\u{1F393}'],
             ],
             default => [],
         };
+    }
+
+    /** Teacher accounts an admin has not decided on yet. */
+    public static function pendingTeacherCount(): ?int
+    {
+        $user = Auth::user();
+
+        if (! $user || ! $user->isAdmin()) {
+            return null;
+        }
+
+        $count = \App\Models\User::pendingTeachers()->count();
+
+        return $count ?: null;
     }
 
     /** Scripts waiting on the signed-in teacher, for the sidebar badge. */

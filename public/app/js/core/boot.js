@@ -31,9 +31,10 @@ export function boot() {
 export function registerServiceWorker() {
   if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
 
-  const swUrl = new URL('../../sw.js', import.meta.url).href;
-
-  navigator.serviceWorker.register(swUrl).then((reg) => {
+  /* Served from the site root so its scope covers /learn/* as well as the
+     assets under /app. A worker registered from /app/sw.js can only ever
+     control /app, which is every stylesheet and none of the screens. */
+  navigator.serviceWorker.register('/sw.js', { scope: '/' }).then((reg) => {
     reg.update().catch(() => {});
     reg.addEventListener('updatefound', () => {
       const fresh = reg.installing;

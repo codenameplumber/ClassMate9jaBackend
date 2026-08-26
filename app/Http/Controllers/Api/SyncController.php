@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\GenerateQuestions;
 use App\Jobs\MarkSubmission;
 use App\Models\Assignment;
 use App\Models\Attempt;
+use App\Models\Question;
 use App\Models\StudentState;
 use App\Models\Subject;
 use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -27,11 +30,23 @@ class SyncController extends Controller
     {
         $user = $request->user() ?? auth()->user();
 
-        $subjects = $user->subjects()->with(['topics.lessons', 'topics.classwork'])->get();
+        // Content is scoped to the student's own year. Without this a JSS1
+        // student would download the SS3 scheme alongside their own, which is
+        // both wrong on the screen and paid for by the megabyte on a phone.
+        $level = $user->level;
+
+        $subjects = $user->subjects()
+            ->with([
+                'topics' => fn ($q) => $q->forLevel($level),
+                'topics.lessons',
+                'topics.classwork',
+            ])
+            ->get();
 
         return response()->json([
             'syncedAt' => now()->toIso8601String(),
             'contentVersion' => Subject::max('updated_at'),
+            'level' => $level,
             'subjects' => $subjects->map(fn ($subject) => [
                 'slug' => $subject->slug,
                 'name' => $subject->name,
@@ -61,8 +76,157 @@ class SyncController extends Controller
                     ]),
                 ]),
             ]),
+            'questions' => $this->pastQuestionsFor($subjects, $level),
+            'practice' => $this->stockPractice($subjects, $level),
             'assignments' => $this->assignmentsFor($user),
             'state' => $user->state?->payload,
+        ]);
+    }
+
+    /**
+     * The past-question bank for the subjects this student takes.
+     *
+     * Practice is graded on the device so a student sees why an answer was
+     * wrong with no network, which means the answer key genuinely has to
+     * ship. That is the opposite of an assignment, where the key never leaves
+     * the server: there a mark is the teacher's to give, here the student is
+     * only ever marking their own practice.
+     *
+     * The shape matches the client bank in js/data/questions.js exactly, so
+     * the device can swap the bundled sample for this with no translation
+     * layer standing between them.
+     */
+    private function pastQuestionsFor($subjects, ?string $level = null): array
+    {
+        $slugs = $subjects->pluck('slug', 'id');
+
+        if ($slugs->isEmpty()) {
+            return [];
+        }
+
+        return Question::whereIn('subject_id', $slugs->keys())
+            ->forLevel($level)
+            ->orderBy('subject_id')
+            ->orderByDesc('year')
+            ->get()
+            ->map(fn ($q) => [
+                'id' => $q->ref,
+                'subject' => $slugs[$q->subject_id],
+                'body' => $q->exam_body,
+                'year' => (int) $q->year,
+                'topic' => $q->topic,
+                'q' => $q->prompt,
+                'options' => $q->options,
+                'answer' => (int) $q->answer_index,
+                'why' => $q->explanation,
+            ])
+            ->all();
+    }
+
+    /**
+     * Top up the practice bank for anything the student takes that is thin.
+     *
+     * Generate-once, serve-forever. The alternative -- calling a model while
+     * the student waits for their twenty questions -- costs money on every
+     * practice set, takes half a minute, and breaks the promise printed on
+     * that screen: that every question is already on the phone and needs no
+     * data. So the first sync that finds a thin subject queues the work, and
+     * the questions arrive on the next one.
+     *
+     * Guarded by a cache key per subject and level, because bootstrap is
+     * called on every app open and thirty students opening at 8am must not
+     * queue the same batch thirty times.
+     *
+     * @return array<string, string> subject slug => state, for the app to show
+     */
+    private function stockPractice($subjects, ?string $level): array
+    {
+        if (! $level || $subjects->isEmpty()) {
+            return [];
+        }
+
+        $target = (int) config('ai.questions_per_topic', 10);
+        $state = [];
+
+        $counts = Question::whereIn('subject_id', $subjects->pluck('id'))
+            ->where('level', $level)
+            ->selectRaw('subject_id, count(*) as total')
+            ->groupBy('subject_id')
+            ->pluck('total', 'subject_id');
+
+        foreach ($subjects as $subject) {
+            $have = (int) ($counts[$subject->id] ?? 0);
+
+            if ($have >= $target) {
+                $state[$subject->slug] = 'ready';
+
+                continue;
+            }
+
+            $state[$subject->slug] = $have > 0 ? 'topping-up' : 'building';
+
+            $lock = $this->stockLock($subject->id, $level);
+
+            // add() is atomic, so only one request in the window wins.
+            if (Cache::add($lock, true, now()->addHours(6))) {
+                GenerateQuestions::dispatch($subject->id, $level);
+            }
+        }
+
+        return $state;
+    }
+
+    /** One key per subject and level, so two callers cannot queue the same work. */
+    private function stockLock(int $subjectId, string $level, ?int $topicId = null): string
+    {
+        return $topicId
+            ? "practice-stock:{$subjectId}:{$level}:{$topicId}"
+            : "practice-stock:{$subjectId}:{$level}";
+    }
+
+    /**
+     * The practice screen asking for a topic to be stocked, directly.
+     *
+     * Same work as the sync-time top-up, but scoped to what the student is
+     * looking at right now, so a student who opens a thin topic gets that
+     * topic filled rather than waiting for their subject's turn.
+     */
+    public function requestPractice(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'subject' => ['required', 'string', 'exists:subjects,slug'],
+            'topicRef' => ['nullable', 'string', 'max:32'],
+        ]);
+
+        $user = auth()->user();
+        $level = $user->level;
+
+        $subject = Subject::where('slug', $data['subject'])->firstOrFail();
+
+        if (! $level) {
+            return response()->json(['queued' => false, 'reason' => 'no-level']);
+        }
+
+        $topic = ! empty($data['topicRef'])
+            ? \App\Models\Topic::where('subject_id', $subject->id)
+                ->where('level', $level)
+                ->where('ref', $data['topicRef'])
+                ->first()
+            : null;
+
+        // The same key shape the sync-time top-up uses, so a subject already
+        // queued by a bootstrap is not queued a second time by the screen.
+        $lock = $this->stockLock($subject->id, $level, $topic?->id);
+
+        if (! Cache::add($lock, true, now()->addHour())) {
+            return response()->json(['queued' => false, 'reason' => 'already-running']);
+        }
+
+        GenerateQuestions::dispatch($subject->id, $level, $topic?->id);
+
+        return response()->json([
+            'queued' => true,
+            'message' => 'Building your practice set. Check back in a few minutes.',
         ]);
     }
 

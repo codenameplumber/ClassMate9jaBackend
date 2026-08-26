@@ -66,19 +66,6 @@ class AuthController extends Controller
 
     private function profile(User $user): array
     {
-        return [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'role' => $user->role,
-            'level' => $user->level,
-            'locale' => $user->locale,
-            'goal' => $user->goal,
-            'dailyGoal' => $user->daily_goal,
-            'onboarded' => (bool) $user->onboarded_at,
-            'school' => $user->school?->name,
-            'linkCode' => $user->linkCode(),
-            'subjects' => $user->subjects()->pluck('slug'),
-        ];
+        return $user->apiProfile();
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Topic extends Model
 {
     protected $fillable = [
-        'subject_id', 'ref', 'week', 'week_title',
+        'subject_id', 'level', 'ref', 'week', 'week_title',
         'title', 'minutes', 'position', 'has_rich_lesson',
     ];
 
@@ -19,6 +19,11 @@ class Topic extends Model
     }
 
     public function subject(): BelongsTo { return $this->belongsTo(Subject::class); }
+
+    public function scopeForLevel($query, ?string $level)
+    {
+        return $level ? $query->where('level', $level) : $query;
+    }
     public function lessons(): HasMany { return $this->hasMany(Lesson::class); }
     public function classwork(): HasMany { return $this->hasMany(ClassworkQuestion::class); }
     public function completions(): HasMany { return $this->hasMany(LessonCompletion::class); }

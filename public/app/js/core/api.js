@@ -95,6 +95,16 @@ export const pushSubmission = (submission) =>
 
 export const submissions = () => call('submissions');
 
+/**
+ * Ask the server to stock this subject (or one topic) with practice questions.
+ *
+ * Used when a student opens a topic the bank is thin on. The work happens on
+ * the server and the questions arrive with the next sync — nobody waits on a
+ * model to finish while looking at an empty screen.
+ */
+export const requestPractice = (subject, topicRef = null) =>
+  call('practice', { method: 'POST', body: { subject, topicRef } });
+
 /* --- Tutor ----------------------------------------------------------------- */
 
 /**

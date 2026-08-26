@@ -3,13 +3,29 @@
 
    Each item carries the exam body, the year and the topic, because the
    diagnosis screen is only useful if a wrong answer can be traced back to a
-   topic. The shipped set is a representative sample; the real pack streams
-   5,000+ items in this exact shape into IndexedDB on first download.
+   topic.
+
+   Two tiers, and the order matters:
+
+     1. The bank synced from /api/bootstrap, held in local storage. This is
+        the real one — it grows as the server generates questions, and it is
+        what a student actually practises against.
+
+     2. SEED_BANK below, compiled into the bundle. It is the cold-start set:
+        what a brand-new install shows before its first sync, and what a
+        device falls back to if storage was cleared. It is a sample, not the
+        product.
+
+   The bank is resolved once at import, from synchronous local storage, so a
+   fresh sync shows up on the next navigation. That is how the rest of the app
+   already behaves — no screen re-renders itself mid-session on new content.
    ========================================================================== */
+
+import * as store from '../core/store.js';
 
 export const EXAM_BODIES = ['WAEC', 'JAMB', 'NECO'];
 
-export const BANK = [
+const SEED_BANK = [
   /* ------------------------------- MATHS ------------------------------- */
   { id: 'm1', subject: 'maths', body: 'WAEC', year: 2019, topic: 'Logarithms',
     q: 'Evaluate log₁₀ 25 + log₁₀ 4.',
@@ -188,6 +204,24 @@ export const BANK = [
     options: ['Heterotrophic', 'Autotrophic', 'Saprophytic', 'Parasitic'], answer: 1,
     why: 'Autotrophs synthesise their own organic food from simple inorganic substances.' },
 ];
+
+/**
+ * The synced bank if there is one, otherwise the bundled sample.
+ *
+ * Anything malformed falls back rather than throwing: a half-written storage
+ * key must not be able to leave a student staring at a broken practice screen
+ * when a perfectly good sample is sitting in the bundle.
+ */
+function loadBank() {
+  const synced = store.get('question-bank', null);
+
+  return Array.isArray(synced) && synced.length ? synced : SEED_BANK;
+}
+
+export const BANK = loadBank();
+
+/** True when practising against real synced content rather than the sample. */
+export const isSynced = () => BANK !== SEED_BANK;
 
 export const YEARS = [...new Set(BANK.map((q) => q.year))].sort((a, b) => b - a);
 

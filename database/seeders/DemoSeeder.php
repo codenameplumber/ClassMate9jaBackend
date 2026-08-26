@@ -118,7 +118,13 @@ class DemoSeeder extends Seeder
             'school_id' => $school->id,
             'subject_slug' => 'maths',
             'phone' => '08023456789',
+            'status' => 'approved',
+            'approved_at' => now(),
         ]);
+
+        // What she teaches, which is now a pivot rather than the one string on
+        // the user that nothing ever wrote to.
+        $teacher->syncTeaching([$maths->id => ['SS2']]);
 
         $parent = $this->user('Mr. Emeka Okonkwo', 'parent@classmate9ja.ng', 'parent', [
             'phone' => '08034567890',
@@ -169,7 +175,12 @@ class DemoSeeder extends Seeder
         $this->progressFor($chidera, $maths);
 
         /* --- The assignment and its thirty scripts -------------------- */
-        $topic = Topic::where('subject_id', $maths->id)->where('ref', 'w3t1')->first();
+        // Scoped to the level the class is actually in: the same ref exists at
+        // every level the subject is taught at, and they are different lessons.
+        $topic = Topic::where('subject_id', $maths->id)
+            ->where('level', $classroom->level)
+            ->where('ref', 'w3t1')
+            ->first();
 
         $assignment = Assignment::create([
             'classroom_id' => $classroom->id,
@@ -245,7 +256,10 @@ class DemoSeeder extends Seeder
            work waiting on the teacher, and work that has come back marked. */
         $quadratics = Assignment::create([
             'classroom_id' => $classroom->id,
-            'topic_id' => Topic::where('subject_id', $maths->id)->where('ref', 'w6t1')->value('id'),
+            'topic_id' => Topic::where('subject_id', $maths->id)
+                ->where('level', $classroom->level)
+                ->where('ref', 'w6t1')
+                ->value('id'),
             'created_by' => $teacher->id,
             'title' => 'Week 6 Classwork · Quadratic Equations',
             'kind' => 'classwork',

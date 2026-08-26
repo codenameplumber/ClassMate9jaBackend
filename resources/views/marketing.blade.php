@@ -443,7 +443,7 @@
           <li><a href="#features">Features</a></li>
           <li><a href="#how">How it works</a></li>
           <li><a href="#offline">Offline mode</a></li>
-          <li><a href="/app/student/downloads.html">Content packs</a></li>
+          <li><a href="{{ route('learn.screen', 'downloads') }}">Content packs</a></li>
         </ul>
       </div>
 

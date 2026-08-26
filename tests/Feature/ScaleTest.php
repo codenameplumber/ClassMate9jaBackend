@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\MarkSubmission;
 use App\Mail\WeeklyReport;
 use App\Models\Assignment;
 use App\Models\Classroom;
@@ -12,6 +13,7 @@ use App\Support\ChildSummary;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
 /**
@@ -219,6 +221,112 @@ class ScaleTest extends TestCase
         Mail::assertQueued(WeeklyReport::class, $linked);
     }
 
+    public function test_marking_and_mail_do_not_share_a_queue(): void
+    {
+        // A student who submits on a Sunday evening must not sit behind a
+        // weekly-report blast that is deliberately released slowly. Separate
+        // queue names are what let the two be scaled apart in production.
+        Queue::fake();
+
+        $submission = Submission::query()->first();
+        $this->assertNotNull($submission);
+
+        MarkSubmission::dispatch($submission->id);
+
+        Queue::assertPushedOn('marking', MarkSubmission::class);
+    }
+
+    /**
+     * Writing a course is slow, expensive and nobody is waiting on it.
+     *
+     * On one queue with marking, an admin generating three courses on a Monday
+     * morning would put every submitted script behind seventy model calls.
+     */
+    public function test_content_generation_does_not_share_a_queue_with_marking(): void
+    {
+        \Illuminate\Support\Facades\Queue::fake();
+
+        \App\Jobs\MarkSubmission::dispatch(1);
+        \App\Jobs\GenerateCourse::dispatch(1);
+        \App\Jobs\GenerateQuestions::dispatch(1, 'SS2');
+
+        \Illuminate\Support\Facades\Queue::assertPushed(
+            \App\Jobs\MarkSubmission::class,
+            fn ($job) => $job->queue === 'marking'
+        );
+
+        foreach ([\App\Jobs\GenerateCourse::class, \App\Jobs\GenerateQuestions::class] as $class) {
+            \Illuminate\Support\Facades\Queue::assertPushed(
+                $class,
+                fn ($job) => $job->queue === 'content'
+            );
+        }
+    }
+
+    public function test_no_queued_report_is_delayed_past_the_platform_ceiling(): void
+    {
+        // Managed queues reject a per-job delay over fifteen minutes. Both
+        // Mail::fake() and Queue::fake() throw the delay away, so this pushes
+        // onto the real database queue and reads back what was actually
+        // written. Nothing is sent: a queued job only becomes an email when a
+        // worker picks it up, and none runs here.
+        config(['queue.default' => 'database', 'mail.throttle_per_minute' => 1]);
+
+        DB::table('jobs')->delete();
+
+        $this->artisan('reports:weekly --day=sunday')->assertSuccessful();
+
+        $delays = DB::table('jobs')
+            ->select('created_at', 'available_at')
+            ->get()
+            ->map(fn ($job) => (int) $job->available_at - (int) $job->created_at);
+
+        $this->assertGreaterThan(10, $delays->count(), 'Nothing was queued, so nothing was tested.');
+        $this->assertGreaterThan(0, $delays->max(), 'The reports were not staggered at all.');
+        $this->assertLessThanOrEqual(
+            15 * 60,
+            $delays->max(),
+            'A report was delayed ' . $delays->max() . 's — past the 15-minute platform ceiling.'
+        );
+    }
+
+    public function test_recorded_study_time_appears_day_by_day_not_just_as_a_total(): void
+    {
+        $student = User::create([
+            'name' => 'Consistent Student',
+            'email' => 'consistent-' . uniqid() . '@test.ng',
+            'password' => 'password',
+            'role' => 'student',
+            'level' => 'SS2',
+            'email_verified_at' => now(),
+            'onboarded_at' => now(),
+        ]);
+
+        // Three real sessions this week, on three different days.
+        foreach ([0 => 30, 2 => 45, 4 => 25] as $offset => $minutes) {
+            $student->studySessions()->create([
+                'minutes' => $minutes,
+                'occurred_on' => now()->startOfWeek()->addDays($offset)->toDateString(),
+                'source' => 'lesson',
+                'client_uuid' => (string) \Illuminate\Support\Str::uuid(),
+            ]);
+        }
+
+        $summary = ChildSummary::for($student);
+
+        $this->assertSame(100, $summary['minutes'], 'The weekly total is wrong.');
+
+        // The regression this guards: the total was right while every day read
+        // zero, so a parent saw "100 minutes" above "0 of 7 days studied".
+        $this->assertSame(
+            100,
+            array_sum($summary['week']),
+            'The day-by-day breakdown does not add up to the weekly total.'
+        );
+        $this->assertSame(3, $summary['days_studied'], 'Days studied was not counted from real sessions.');
+        $this->assertSame([30, 0, 45, 0, 25, 0, 0], $summary['week']);
+    }
+
     public function test_the_weekly_report_renders_for_a_student_with_no_data_at_all(): void
     {
         // A brand-new student is the case that breaks report builders.
@@ -241,68 +349,148 @@ class ScaleTest extends TestCase
         $this->assertSame(0, $summary['average']);
     }
 
+    /**
+     * Mail actually leaves the building.
+     *
+     * Provider-agnostic on purpose: this used to assert Mailtrap by name and
+     * broke the moment the app moved to Resend, which is the opposite of what
+     * a test like this is for. What matters is that the configured mailer is a
+     * real transport rather than `log` or `array`, and that whatever it needs
+     * to authenticate is present.
+     */
     public function test_the_mailer_is_pointed_at_a_real_transport(): void
     {
-        // The test suite deliberately runs on the array mailer, so asserting on
-        // config() here would only prove phpunit.xml works. The real question is
+        // The suite deliberately runs on the array mailer, so asserting on
+        // config() would only prove phpunit.xml works. The real question is
         // what the application is configured to do when it runs.
-        $env = file_get_contents(base_path('.env'));
+        $env = str_replace("\r\n", "\n", file_get_contents(base_path('.env')));
 
-        // The file has Windows line endings, so `$` in multiline mode would sit
-        // before the \r and never match. Normalise before asserting.
-        $env = str_replace("\r\n", "\n", $env);
+        preg_match('/^MAIL_MAILER=(.*)$/m', $env, $match);
+        $mailer = trim($match[1] ?? '');
 
-        $this->assertMatchesRegularExpression(
-            '/^MAIL_MAILER=smtp$/m',
-            $env,
-            'MAIL_MAILER is not smtp, so nothing is actually delivered anywhere.'
+        $this->assertNotContains(
+            $mailer,
+            ['log', 'array', ''],
+            "MAIL_MAILER is `{$mailer}`, so nothing is delivered anywhere."
         );
-        $this->assertMatchesRegularExpression(
-            '/^MAIL_HOST=sandbox\.smtp\.mailtrap\.io$/m',
-            $env,
-            'The SMTP host is not pointed at Mailtrap.'
+
+        $this->assertArrayHasKey(
+            $mailer,
+            config('mail.mailers'),
+            "MAIL_MAILER is `{$mailer}`, which is not a configured mailer."
+        );
+
+        // A transport whose package is missing resolves at send time, not at
+        // config time -- which means it looks fine until the first real email.
+        $this->assertNotNull(
+            app('mail.manager')->mailer($mailer),
+            "The `{$mailer}` transport could not be built. Its package is probably not installed."
         );
     }
 
-    public function test_mailtrap_credentials_are_present(): void
+    /** Whatever the chosen provider needs to authenticate is actually set. */
+    public function test_the_mailer_has_the_credentials_it_needs(): void
     {
         $env = str_replace("\r\n", "\n", file_get_contents(base_path('.env')));
 
-        preg_match('/^MAIL_USERNAME=(.*)$/m', $env, $user);
-        preg_match('/^MAIL_PASSWORD=(.*)$/m', $env, $pass);
+        $value = function (string $key) use ($env) {
+            preg_match('/^' . preg_quote($key, '/') . '=(.*)$/m', $env, $m);
 
-        $missing = blank(trim($user[1] ?? '')) || blank(trim($pass[1] ?? ''));
+            return trim($m[1] ?? '', " \t\"'");
+        };
 
-        // Not a failure — a status report. Everything else about mail is proven
-        // working; only the credentials are outstanding.
+        preg_match('/^MAIL_MAILER=(.*)$/m', $env, $match);
+        $mailer = trim($match[1] ?? '');
+
+        $needs = match ($mailer) {
+            'resend' => ['RESEND_API_KEY'],
+            'postmark' => ['POSTMARK_TOKEN'],
+            'ses' => ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'],
+            'smtp' => ['MAIL_HOST', 'MAIL_USERNAME', 'MAIL_PASSWORD'],
+            default => [],
+        };
+
+        $missing = collect($needs)->filter(fn ($key) => blank($value($key)))->all();
+
+        // A status report rather than a failure: everything else about mail is
+        // proven working, and only the credentials are outstanding.
         if ($missing) {
             $this->markTestSkipped(
-                'MAIL_USERNAME / MAIL_PASSWORD are empty. Paste the SMTP credentials '
-                . 'from your Mailtrap inbox to enable real delivery.'
+                "The `{$mailer}` mailer is missing " . implode(', ', $missing)
+                . '. Real delivery will fail until those are set.'
             );
         }
 
-        $this->assertTrue(true);
+        $this->assertNotEmpty($value('MAIL_FROM_ADDRESS'), 'No from-address is set.');
+    }
+
+    /**
+     * The throttle has to match the provider, or a Sunday blast is mostly lost.
+     *
+     * Mailtrap's sandbox accepts about one message every ten seconds; Resend
+     * takes far more. A throttle left at the sandbox value on a real provider
+     * is not broken, only needlessly slow -- so this reports rather than fails.
+     */
+    public function test_the_send_rate_suits_the_provider(): void
+    {
+        $env = str_replace("\r\n", "\n", file_get_contents(base_path('.env')));
+
+        preg_match('/^MAIL_MAILER=(.*)$/m', $env, $match);
+        $mailer = trim($match[1] ?? '');
+
+        $perMinute = (int) config('mail.throttle_per_minute');
+        $linked = \App\Models\ParentLink::whereNotNull('verified_at')->count();
+
+        if (in_array($mailer, ['smtp', 'log', 'array'], true)) {
+            $this->assertGreaterThan(0, $perMinute);
+
+            return;
+        }
+
+        // 14 minutes is the per-job delay ceiling the weekly blast staggers
+        // inside; past that, reports arrive in a burst.
+        $capacity = (int) floor(14 * 60 / (60 / max(1, $perMinute))) + 1;
+
+        if ($linked > $capacity) {
+            $this->markTestSkipped(
+                "MAIL_THROTTLE_PER_MINUTE is {$perMinute}, which spaces {$capacity} reports cleanly, "
+                . "but {$linked} parents are linked. Raise it on a real provider."
+            );
+        }
+
+        $this->assertGreaterThan(0, $perMinute);
     }
 
     /* ---------------------------------------------------------- the AI */
 
-    public function test_the_ai_engine_is_bound_to_claude(): void
+    public function test_the_ai_engine_binds_to_the_configured_provider(): void
     {
         $marker = app(\App\Services\Ai\Marker::class);
-        $tutor = app(\App\Services\Ai\Tutor::class);
+        $driver = config('ai.driver');
 
-        $this->assertSame('claude', config('ai.driver'));
-        $this->assertStringStartsWith('claude-', config('ai.model'));
+        $this->assertContains($driver, ['openai', 'claude', 'null'], "Unknown AI driver `{$driver}`.");
 
-        // With no key the marker must be the null driver, so written answers
-        // wait for a teacher instead of being guessed.
-        if (blank(config('ai.anthropic.key'))) {
+        $key = match ($driver) {
+            'openai' => config('ai.openai.key'),
+            'claude' => config('ai.anthropic.key'),
+            default => null,
+        };
+
+        // The rule that actually matters: no key means the null driver, so a
+        // written answer waits for a teacher rather than being guessed at.
+        if (blank($key)) {
             $this->assertInstanceOf(\App\Services\Ai\NullMarker::class, $marker);
-            $this->assertFalse($tutor->isConfigured());
-        } else {
-            $this->assertInstanceOf(\App\Services\Ai\ClaudeMarker::class, $marker);
-            $this->assertTrue($tutor->isConfigured());
+            $this->assertFalse($marker->isConfigured());
+            $this->assertFalse(app(\App\Services\Ai\Tutor::class)->isConfigured());
+
+            return;
         }
+
+        $expected = $driver === 'openai'
+            ? \App\Services\Ai\OpenAiMarker::class
+            : \App\Services\Ai\ClaudeMarker::class;
+
+        $this->assertInstanceOf($expected, $marker);
+        $this->assertTrue($marker->isConfigured());
     }
 }

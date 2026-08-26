@@ -2,21 +2,42 @@
   "name": "ClassMate 9ja — Offline AI Teacher",
   "short_name": "ClassMate 9ja",
   "description": "Offline AI tutor, auto-marker and WAEC/JAMB practice for Nigerian students.",
-  "start_url": "index.html",
-  "scope": "./",
+  "start_url": "/learn/dashboard",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#F6FAF8",
   "theme_color": "#008751",
   "lang": "en-NG",
-  "categories": ["education"],
+  "categories": [
+    "education"
+  ],
   "icons": [
-    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "assets/icons/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    {
+      "src": "/app/assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/app/assets/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "Ask the AI tutor", "url": "student/tutor.html" },
-    { "name": "Practice past questions", "url": "student/practice.html" },
-    { "name": "My progress", "url": "student/progress.html" }
+    {
+      "name": "Ask the AI tutor",
+      "url": "/learn/tutor"
+    },
+    {
+      "name": "Practice past questions",
+      "url": "/learn/practice"
+    },
+    {
+      "name": "My progress",
+      "url": "/learn/progress"
+    }
   ]
 }

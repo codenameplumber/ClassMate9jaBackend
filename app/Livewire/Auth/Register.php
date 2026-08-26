@@ -48,13 +48,20 @@ class Register extends Component
             'password' => $data['password'],
             'role' => $data['role'],
             'locale' => 'both',
+
+            // Anyone can claim to be a teacher; marking other people's children
+            // is not a thing an account gets to grant itself. Students and
+            // parents are approved on sight, because nothing they can reach
+            // belongs to anybody else.
+            'status' => $data['role'] === 'teacher' ? 'pending' : 'approved',
+            'approved_at' => $data['role'] === 'teacher' ? null : now(),
         ]);
 
         event(new Registered($user));
         Auth::login($user, remember: true);
         session()->regenerate();
 
-        $this->redirect(route('onboarding'), navigate: false);
+        $this->redirect($user->homeRoute(), navigate: false);
     }
 
     public function render()

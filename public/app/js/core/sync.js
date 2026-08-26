@@ -114,6 +114,13 @@ export async function sync({ pull = true } = {}) {
       });
       assignments = boot.data.assignments || [];
       store.set('assignments', assignments);
+
+      /* The past-question bank. Only written when the server actually sent an
+         array — a truncated response must not be allowed to wipe a good bank
+         and drop the student back to the bundled sample. */
+      if (Array.isArray(boot.data.questions)) {
+        store.set('question-bank', boot.data.questions);
+      }
     }
 
     /* Marked scripts coming back the other way. */

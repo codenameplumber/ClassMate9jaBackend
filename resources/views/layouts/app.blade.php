@@ -49,7 +49,7 @@
           <div class="nav-group-title">{{ $group['title'] }}</div>
           @foreach ($group['items'] as $item)
             <a class="nav-link {{ request()->routeIs($item['route']) ? 'is-active' : '' }}"
-               href="{{ $item['url'] ?? route($item['route']) }}"
+               href="{{ $item['url'] ?? route($item['route'], $item['params'] ?? []) }}"
                @if(!empty($item['external'])) data-external @endif>
               <span class="ico">{{ $item['emoji'] }}</span>{{ $item['label'] }}
               @if (!empty($item['badge']))
@@ -105,7 +105,7 @@
   <nav class="tabbar" aria-label="Quick navigation">
     @foreach ($tabs as $tab)
       <a class="{{ request()->routeIs($tab['route']) ? 'is-active' : '' }}"
-         href="{{ $tab['url'] ?? route($tab['route']) }}">
+         href="{{ $tab['url'] ?? route($tab['route'], $tab['params'] ?? []) }}">
         <span class="ico">{{ $tab['emoji'] }}</span>{{ $tab['label'] }}
       </a>
     @endforeach

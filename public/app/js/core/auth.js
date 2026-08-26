@@ -1,76 +1,166 @@
 /* ==========================================================================
-   auth.js — offline-first mock authentication.
+   auth.js — who is signed in, according to the server.
 
-   Everything here runs against localStorage: accounts, sessions, OTP codes.
-   That is deliberate. A student in Zamfara must be able to log in with the
-   phone in flight mode. When a backend exists, only the four functions
-   marked [SERVER] need to change — the screens never touch storage directly.
+   This file used to be a mock: accounts, passwords and OTP codes all kept in
+   localStorage, with three demo logins compiled into the bundle. It let the
+   app be demonstrated before a backend existed, and it meant anyone could mint
+   themselves a teacher account on their own device.
+
+   The server owns identity now. The page is rendered by Laravel behind a
+   session, and it writes the signed-in account into `cm9ja:session-user`
+   before any module runs. Everything here reads that.
+
+   The mirror is what keeps the app offline-first. Once a student has opened a
+   screen, their account is on the device, so every page still renders with the
+   data off — the service worker serves the shell, this returns the account,
+   and the only thing that actually needs network is syncing. What is gone is
+   the ability to *become* someone with no network, which never worked against
+   anything real in the first place.
    ========================================================================== */
 
 import * as store from './store.js';
-import { goReplace } from './paths.js';
+import { goReplace, url } from './paths.js';
 
-const USERS   = 'users';
-const SESSION = 'session';
-const OTP     = 'otp';
+const SESSION_USER = 'session-user';
 
-/* --- Demo accounts -------------------------------------------------------
-   Seeded once so the app works before it has ever reached the server.
-   Emails match the Laravel seeder, so the same credentials work online
-   and offline. */
-const SEED_USERS = [
-  {
-    id: 'u-student-1',
-    role: 'student',
-    name: 'Chidera Okonkwo',
-    phone: '08012345678',
-    email: 'student@classmate9ja.ng',
-    password: 'student',
-    level: 'SS2',
-    school: 'Government Secondary School, Wuse',
-    goal: 'both',
-    language: 'both',
-    subjects: ['maths', 'english', 'physics', 'chemistry', 'biology'],
-    onboarded: true,
-    avatarTone: 'green',
-  },
-  {
-    id: 'u-teacher-1',
-    role: 'teacher',
-    name: 'Mrs. Folake Adebayo',
-    phone: '08023456789',
-    email: 'teacher@classmate9ja.ng',
-    password: 'teacher',
-    school: 'Government Secondary School, Wuse',
-    subject: 'maths',
-    onboarded: true,
-    avatarTone: 'sky',
-  },
-  {
-    id: 'u-parent-1',
-    role: 'parent',
-    name: 'Mr. Emeka Okonkwo',
-    phone: '08034567890',
-    email: 'parent@classmate9ja.ng',
-    password: 'parent',
-    children: ['u-student-1'],
-    onboarded: true,
-    avatarTone: 'amber',
-  },
-];
+/* --- Who is signed in ----------------------------------------------------- */
 
-function seed() {
-  if (!store.get(USERS)) store.set(USERS, SEED_USERS);
+/** The signed-in account, or null. Reads the server-injected mirror. */
+export function currentUser() {
+  const user = store.get(SESSION_USER, null);
+
+  return user && typeof user === 'object' && user.id ? user : null;
 }
-seed();
 
-/* --- Helpers -------------------------------------------------------------- */
+export const isSignedIn = () => Boolean(currentUser());
+
+/**
+ * Persist changes to the signed-in account.
+ *
+ * Local only, and deliberately so: this keeps the screen honest while a
+ * PATCH /api/me is in flight or waiting for signal. The server stays
+ * authoritative — the next page load overwrites this with whatever it says.
+ */
+export function updateUser(changes) {
+  const me = currentUser();
+  if (!me) return null;
+
+  const next = { ...me, ...changes };
+  store.set(SESSION_USER, next);
+
+  return next;
+}
+
+/**
+ * Take a profile from the API and make it the local mirror.
+ *
+ * Used after onboarding and after a settings save, where the server has just
+ * recomputed fields the device cannot derive on its own.
+ */
+export function adoptRemoteUser(profile) {
+  if (!profile || typeof profile !== 'object') return currentUser();
+
+  store.set(SESSION_USER, profile);
+
+  return profile;
+}
+
+/* --- Leaving --------------------------------------------------------------- */
+
+/**
+ * Sign out of the Laravel session, not just this device.
+ *
+ * Logout is a POST so that a stray link or a prefetch cannot end someone's
+ * session, which means submitting a form with the CSRF token the page carries.
+ * Local state is cleared first: if the request never lands because the phone
+ * is offline, the account is still gone from this device.
+ */
+export function signOut() {
+  store.remove(SESSION_USER);
+  store.remove('api-token');
+
+  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+
+  if (!token) {
+    goReplace('auth/login.html');
+
+    return;
+  }
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/logout';
+  form.style.display = 'none';
+
+  const field = document.createElement('input');
+  field.type = 'hidden';
+  field.name = '_token';
+  field.value = token;
+
+  form.appendChild(field);
+  document.body.appendChild(form);
+  form.submit();
+}
+
+/* --- Route guards ---------------------------------------------------------- */
+
+export const HOME_FOR = {
+  student: 'student/dashboard.html',
+  teacher: 'teacher/dashboard.html',
+  parent: 'parent/dashboard.html',
+};
+
+/** Send a signed-in user to the right home (or to onboarding if unfinished). */
+export function routeHome(user = currentUser()) {
+  if (!user) return goReplace('auth/login.html');
+  if (user.role === 'student' && !user.onboarded) return goReplace('auth/onboarding.html');
+
+  return goReplace(HOME_FOR[user.role] || HOME_FOR.student);
+}
+
+/**
+ * Call at the top of every protected page.
+ *
+ * The server has already gated the route — this cannot be the only check and
+ * is not pretending to be. It exists so a screen opened from the service
+ * worker cache with no session mirror sends the student to sign in rather than
+ * rendering an empty shell full of undefined.
+ *
+ * @param {string|string[]} roles allowed role(s)
+ * @returns the signed-in user, or null while redirecting
+ */
+export function requireAuth(roles) {
+  const me = currentUser();
+
+  if (!me) {
+    goReplace('auth/login.html');
+
+    return null;
+  }
+
+  if (me.role === 'student' && !me.onboarded) {
+    goReplace('auth/onboarding.html');
+
+    return null;
+  }
+
+  const allowed = Array.isArray(roles) ? roles : [roles];
+
+  if (roles && !allowed.includes(me.role)) {
+    routeHome(me);
+
+    return null;
+  }
+
+  return me;
+}
 
 /** Nigerian numbers arrive as 0803…, +234803…, 234803… — store one shape. */
 export function normalisePhone(raw = '') {
   const digits = String(raw).replace(/\D/g, '');
   if (digits.startsWith('234')) return `0${digits.slice(3)}`;
   if (digits.length === 10) return `0${digits}`;
+
   return digits;
 }
 
@@ -78,191 +168,10 @@ export function isValidPhone(raw = '') {
   return /^0[7-9][01]\d{8}$/.test(normalisePhone(raw));
 }
 
-const allUsers = () => store.get(USERS, []) || [];
-
-export function findUser(identifier = '') {
-  const id = String(identifier).trim().toLowerCase();
-  const phone = normalisePhone(identifier);
-  return allUsers().find(
-    (u) => u.email?.toLowerCase() === id || u.phone === phone
-  ) || null;
-}
-
-/* --- Sign up / sign in ---------------------------------------------------- */
-
-/** [SERVER] Create an account. Returns {ok, user} or {ok:false, error}. */
-export function signUp({ name, phone, email, password, role = 'student' }) {
-  const cleanPhone = normalisePhone(phone);
-  if (!name?.trim()) return { ok: false, error: 'Enter your full name.' };
-  if (!isValidPhone(cleanPhone)) return { ok: false, error: 'Enter a valid Nigerian phone number.' };
-  if (!password || password.length < 6) return { ok: false, error: 'Password must be at least 6 characters.' };
-  if (findUser(cleanPhone)) return { ok: false, error: 'This number already has an account. Log in instead.' };
-
-  const user = {
-    id: `u-${role}-${Date.now().toString(36)}`,
-    role,
-    name: name.trim(),
-    phone: cleanPhone,
-    email: email?.trim() || '',
-    password,
-    onboarded: false,
-    subjects: [],
-    avatarTone: 'green',
-  };
-  store.set(USERS, [...allUsers(), user]);
-  startSession(user.id);
-  return { ok: true, user };
-}
-
-/** [SERVER] Verify credentials and open a session. */
-export function signIn(identifier, password) {
-  const user = findUser(identifier);
-  if (!user) return { ok: false, error: 'No account found for that number or email.' };
-  if (user.password !== password) return { ok: false, error: 'Wrong password. Try again or reset it.' };
-  startSession(user.id);
-  return { ok: true, user };
-}
-
-function startSession(userId) {
-  store.set(SESSION, { userId, since: new Date().toISOString() });
-}
-
-/**
- * [SERVER] Take a profile returned by the API and make it the local account.
- *
- * The device keeps a local mirror of the signed-in user so every screen still
- * renders when the network is gone. The server stays authoritative: whatever
- * it sends overwrites the mirror.
- */
-export function adoptRemoteUser(profile) {
-  const users = allUsers();
-  const existing = users.find((u) => u.email?.toLowerCase() === profile.email?.toLowerCase());
-
-  const merged = {
-    ...(existing || {}),
-    id: existing?.id || `u-${profile.role}-${profile.id}`,
-    serverId: profile.id,
-    role: profile.role,
-    name: profile.name,
-    email: profile.email,
-    level: profile.level || existing?.level || 'SS2',
-    language: profile.locale === 'pcm' ? 'pidgin' : profile.locale === 'en' ? 'english' : 'both',
-    goal: profile.goal || 'both',
-    dailyGoal: profile.dailyGoal || 30,
-    school: profile.school || existing?.school || '',
-    subjects: profile.subjects?.length ? profile.subjects : (existing?.subjects || []),
-    onboarded: Boolean(profile.onboarded),
-  };
-
-  store.set(USERS, existing
-    ? users.map((u) => (u.id === merged.id ? merged : u))
-    : [...users, merged]);
-
-  startSession(merged.id);
-
-  return merged;
-}
-
-export function signOut() {
-  store.remove(SESSION);
-  goReplace('auth/login.html');
-}
-
-export function currentUser() {
-  const session = store.get(SESSION);
-  if (!session?.userId) return null;
-  return allUsers().find((u) => u.id === session.userId) || null;
-}
-
-export const isSignedIn = () => Boolean(currentUser());
-
-/** Persist changes to the signed-in user (onboarding answers, settings). */
-export function updateUser(changes) {
-  const me = currentUser();
-  if (!me) return null;
-  const next = { ...me, ...changes };
-  store.set(USERS, allUsers().map((u) => (u.id === me.id ? next : u)));
-  return next;
-}
-
-/* --- OTP (password reset by SMS) -----------------------------------------
-   Offline demo: the code is generated on-device and surfaced in the UI.
-   [SERVER] swaps this for an SMS gateway call; verify() stays identical. */
-
-export function sendOtp(phone) {
-  const cleanPhone = normalisePhone(phone);
-  if (!isValidPhone(cleanPhone)) return { ok: false, error: 'Enter a valid Nigerian phone number.' };
-  if (!findUser(cleanPhone)) return { ok: false, error: 'No account found for that number.' };
-
-  const code = String(Math.floor(100000 + Math.random() * 900000));
-  store.set(OTP, { phone: cleanPhone, code, expires: Date.now() + 10 * 60 * 1000, attempts: 0 });
-  return { ok: true, phone: cleanPhone, code };  // code returned for the demo banner only
-}
-
-export function verifyOtp(code) {
-  const record = store.get(OTP);
-  if (!record) return { ok: false, error: 'Request a new code.' };
-  if (Date.now() > record.expires) return { ok: false, error: 'That code has expired. Request a new one.' };
-  if (record.attempts >= 5) return { ok: false, error: 'Too many tries. Request a new code.' };
-  if (String(code) !== record.code) {
-    store.set(OTP, { ...record, attempts: record.attempts + 1 });
-    return { ok: false, error: 'Incorrect code. Check your SMS and try again.' };
-  }
-  store.set(OTP, { ...record, verified: true });
-  return { ok: true, phone: record.phone };
-}
-
-export function resetPassword(newPassword) {
-  const record = store.get(OTP);
-  if (!record?.verified) return { ok: false, error: 'Verify your phone number first.' };
-  if (!newPassword || newPassword.length < 6) return { ok: false, error: 'Password must be at least 6 characters.' };
-
-  store.set(USERS, allUsers().map((u) =>
-    u.phone === record.phone ? { ...u, password: newPassword } : u
-  ));
-  store.remove(OTP);
-  return { ok: true };
-}
-
-export const pendingOtpPhone = () => store.get(OTP)?.phone || null;
-
-/** DEMO ONLY — lets the verify screen display the code there is no SMS for.
-    Delete this together with the demo banner once an SMS gateway exists. */
-export const peekOtp = () => store.get(OTP)?.code || null;
-
-export const otpVerified = () => Boolean(store.get(OTP)?.verified);
-
-/* --- Route guards --------------------------------------------------------- */
-
-export const HOME_FOR = {
-  student: 'student/dashboard.html',
-  teacher: 'teacher/dashboard.html',
-  parent:  'parent/dashboard.html',
-};
-
-/** Send a signed-in user to the right dashboard (or onboarding if unfinished). */
-export function routeHome(user = currentUser()) {
-  if (!user) return goReplace('auth/login.html');
-  if (!user.onboarded) return goReplace('auth/onboarding.html');
-  return goReplace(HOME_FOR[user.role] || HOME_FOR.student);
-}
-
-/**
- * Call at the top of every protected page.
- * @param {string|string[]} roles allowed role(s)
- * @returns the signed-in user, or null while redirecting
- */
-export function requireAuth(roles) {
-  const me = currentUser();
-  if (!me) { goReplace('auth/login.html'); return null; }
-  if (!me.onboarded) { goReplace('auth/onboarding.html'); return null; }
-  const allowed = Array.isArray(roles) ? roles : [roles];
-  if (roles && !allowed.includes(me.role)) { routeHome(me); return null; }
-  return me;
-}
-
-/** Call on auth pages: bounce users who are already signed in. */
+/** Where to send someone who is already signed in and lands on an auth page. */
 export function redirectIfSignedIn() {
   const me = currentUser();
   if (me) routeHome(me);
 }
+
+export { url };

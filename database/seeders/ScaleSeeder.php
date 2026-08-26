@@ -84,6 +84,7 @@ class ScaleSeeder extends Seeder
                 $teacher = $this->teacherFor($school, $subjectSlug, $index, $slot);
                 $totals['teachers']++;
 
+                // Both levels this subject is taught at in the demo school.
                 foreach ([['SS2', 'A'], ['SS1', 'B']] as $arm => [$level, $letter]) {
                     $classroom = Classroom::firstOrCreate(
                         ['join_code' => strtoupper(substr($subjectSlug, 0, 3)) . "-{$index}{$slot}{$arm}"],
@@ -134,7 +135,7 @@ class ScaleSeeder extends Seeder
             . self::FIRST_NAMES[$s % count(self::FIRST_NAMES)] . ' '
             . self::LAST_NAMES[($s >> 3) % count(self::LAST_NAMES)];
 
-        return User::firstOrCreate(
+        $teacher = User::firstOrCreate(
             ['email' => "teacher{$schoolIndex}{$slot}@classmate9ja.ng"],
             [
                 'name' => $name,
@@ -144,8 +145,19 @@ class ScaleSeeder extends Seeder
                 'subject_slug' => $subjectSlug,
                 'email_verified_at' => now(),
                 'onboarded_at' => now(),
+                'status' => 'approved',
+                'approved_at' => now(),
             ]
         );
+
+        // Each of these teachers runs an SS2 and an SS1 arm of their subject.
+        $subjectId = Subject::where('slug', $subjectSlug)->value('id');
+
+        if ($subjectId) {
+            $teacher->syncTeaching([$subjectId => ['SS1', 'SS2']]);
+        }
+
+        return $teacher;
     }
 
     /** @return User[] */
@@ -265,7 +277,14 @@ class ScaleSeeder extends Seeder
     private function assignmentsFor(Classroom $classroom, User $teacher, string $subjectSlug, array $students): array
     {
         $subject = Subject::where('slug', $subjectSlug)->first();
-        $topics = Topic::where('subject_id', $subject?->id)->orderBy('week')->take(6)->get();
+
+        // Topics belong to a level. Without this filter an SS1 class would be
+        // set work from the SS2 scheme, because both share the same refs.
+        $topics = Topic::where('subject_id', $subject?->id)
+            ->where('level', $classroom->level)
+            ->orderBy('week')
+            ->take(6)
+            ->get();
 
         if ($topics->isEmpty()) {
             return ['assignments' => 0, 'scripts' => 0];

@@ -37,14 +37,24 @@ class SendWeeklyReports extends Command
         $spacing = 60 / $perMinute;
         $queued = 0;
 
+        // Managed queues on Laravel Cloud (and SQS generally) refuse a per-job
+        // delay beyond fifteen minutes, so the spread has to fit inside that
+        // window. It only binds at very low throttles: at 5/minute the window
+        // holds 70 reports, at 100/minute it holds 1,400. Anything past the
+        // ceiling is released at the ceiling rather than silently dropped, and
+        // the command says so.
+        $ceiling = 14 * 60;
+        $capacity = (int) floor($ceiling / $spacing) + 1;
+
         foreach ($links as $link) {
             if (! $link->parent?->email || ! $link->student) {
                 continue;
             }
 
             Mail::to($link->parent)->later(
-                now()->addSeconds((int) round($queued * $spacing)),
-                new WeeklyReport($link->student, ChildSummary::for($link->student))
+                now()->addSeconds((int) min($ceiling, round($queued * $spacing))),
+                (new WeeklyReport($link->student, ChildSummary::for($link->student)))
+                    ->onQueue('mail')
             );
 
             $queued++;
@@ -58,6 +68,14 @@ class SendWeeklyReports extends Command
 
         $this->info("{$queued} reports queued, released at {$perMinute}/minute — "
             . "about {$minutes} " . str('minute')->plural($minutes) . ' to clear.');
+
+        if ($queued > $capacity) {
+            $over = $queued - $capacity;
+
+            $this->warn("{$over} of them land on the 14-minute delay ceiling and will "
+                . 'arrive in a burst. Raise MAIL_THROTTLE_PER_MINUTE to spread them '
+                . "properly — {$perMinute}/minute only spaces {$capacity} cleanly.");
+        }
 
         return self::SUCCESS;
     }

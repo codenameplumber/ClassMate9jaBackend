@@ -34,6 +34,15 @@ return new class extends Migration
             $table->string('api_token', 80)->nullable()->unique()->after('remember_token');
             $table->timestamp('onboarded_at')->nullable();
             $table->timestamp('last_seen_at')->nullable();
+
+            // Teachers are vetted before they can reach a class; everyone else
+            // is approved on sight. Storing this per user rather than deriving
+            // it from the role means the same gate can later cover a school
+            // admin without the column having to change meaning.
+            $table->string('status', 16)->default('approved')->after('role');
+            $table->timestamp('approved_at')->nullable();
+            $table->foreignId('approved_by')->nullable();
+            $table->text('rejected_reason')->nullable();
         });
 
         Schema::create('schools', function (Blueprint $table) {
@@ -59,12 +68,39 @@ return new class extends Migration
             $table->unsignedSmallInteger('pack_mb')->default(0);
             $table->unsignedSmallInteger('topic_count')->default(0);
             $table->text('blurb')->nullable();
+            // A course an admin has just created has no content yet. It exists,
+            // but no student should be offered it until a level of it is ready.
+            $table->string('status', 16)->default('published');
             $table->timestamps();
+        });
+
+        /*
+        | Which levels a subject is actually taught at, and how far along each
+        | one is.
+        |
+        | This is the unit everything downstream is built on. Further Maths is
+        | senior-only and Basic Science is junior-only, so "a subject" is not
+        | something a student can be given -- a subject *at a level* is.
+        | Declaring the offering before any content exists is what gives the
+        | generator a target to fill and the subject picker something to show.
+        */
+        Schema::create('subject_levels', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->string('level', 8);                       // JSS1..SS3
+            $table->string('status', 16)->default('draft');   // draft | generating | published | failed
+            $table->unsignedSmallInteger('topic_count')->default(0);
+            $table->unsignedSmallInteger('question_count')->default(0);
+            $table->timestamp('published_at')->nullable();
+            $table->timestamps();
+            $table->unique(['subject_id', 'level']);
+            $table->index('status');
         });
 
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->string('level', 8)->default('SS2');   // JSS1..SS3
             $table->string('ref', 32);                 // w4t1 — stable id the PWA already uses
             $table->unsignedTinyInteger('week');
             $table->string('week_title');
@@ -73,8 +109,10 @@ return new class extends Migration
             $table->unsignedSmallInteger('position')->default(1);
             $table->boolean('has_rich_lesson')->default(false);
             $table->timestamps();
-            $table->unique(['subject_id', 'ref']);
-            $table->index(['subject_id', 'week']);
+            // A ref is only unique inside one level: SS1 and SS2 each have a
+            // week 4 topic 1, and they are different lessons.
+            $table->unique(['subject_id', 'level', 'ref']);
+            $table->index(['subject_id', 'level', 'week']);
         });
 
         // Keyed by (topic, locale) rather than body_en / body_pcm columns, so
@@ -112,9 +150,20 @@ return new class extends Migration
             $table->json('options');
             $table->unsignedTinyInteger('answer_index');
             $table->text('explanation')->nullable();
+            $table->string('level', 8)->default('SS2');
+
+            // Where this question came from, and whether a human has checked
+            // it. An AI-written answer key nobody has looked at marks a correct
+            // student wrong, silently. Provenance is not bookkeeping here: it
+            // is what lets a bad batch be found and pulled.
+            $table->string('source', 16)->default('seeded');   // seeded | ai
+            $table->timestamp('reviewed_at')->nullable();
+            $table->foreignId('reviewed_by')->nullable();
+
             $table->timestamps();
             $table->index(['subject_id', 'topic']);
             $table->index(['subject_id', 'exam_body', 'year']);
+            $table->index(['subject_id', 'level', 'source']);
         });
 
         /* ---------------------------------------------------------------
@@ -266,6 +315,48 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        /*
+        | What a teacher teaches.
+        |
+        | Replaces users.subject_slug, which held one string and which nothing
+        | ever wrote to. A teacher takes several subjects and rarely at every
+        | level, so the level belongs in the pivot: "Maths at SS1 and SS2" is
+        | the real unit, not "Maths".
+        */
+        Schema::create('teacher_subject', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->string('level', 8);
+            $table->timestamps();
+            $table->unique(['user_id', 'subject_id', 'level']);
+        });
+
+        /*
+        | An admin request for a course to be written, and what became of it.
+        |
+        | Generation is slow, costs money and can half-fail, so it is a record
+        | rather than a fire-and-forget job. The admin explains what they want
+        | in `brief`, the job reports progress here, and a failure leaves a
+        | readable reason instead of a subject that silently never filled up.
+        */
+        Schema::create('course_generations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->string('level', 8);
+            $table->foreignId('requested_by')->constrained('users')->cascadeOnDelete();
+            $table->text('brief');
+            $table->string('status', 16)->default('queued');  // queued | running | done | failed
+            $table->unsignedSmallInteger('topics_written')->default(0);
+            $table->unsignedSmallInteger('lessons_written')->default(0);
+            $table->unsignedSmallInteger('questions_written')->default(0);
+            $table->text('error')->nullable();
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('finished_at')->nullable();
+            $table->timestamps();
+            $table->index(['status', 'created_at']);
+        });
+
         /* ---------------------------------------------------------------
          | Parents
          ---------------------------------------------------------------- */
@@ -284,17 +375,20 @@ return new class extends Migration
     public function down(): void
     {
         foreach ([
-            'parent_links', 'submission_answers', 'submissions', 'assignment_questions',
+            'parent_links', 'course_generations', 'teacher_subject',
+            'submission_answers', 'submissions', 'assignment_questions',
             'assignments', 'classroom_student', 'classrooms', 'attempt_answers', 'attempts',
             'study_sessions', 'lesson_completions', 'student_states', 'enrollments',
-            'questions', 'classwork_questions', 'lessons', 'topics', 'subjects', 'schools',
+            'questions', 'classwork_questions', 'lessons', 'topics', 'subject_levels',
+            'subjects', 'schools',
         ] as $table) {
             Schema::dropIfExists($table);
         }
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'role', 'phone', 'school_id', 'level', 'locale', 'goal',
+                'role', 'status', 'approved_at', 'approved_by', 'rejected_reason',
+                'phone', 'school_id', 'level', 'locale', 'goal',
                 'daily_goal', 'subject_slug', 'api_token', 'onboarded_at', 'last_seen_at',
             ]);
         });

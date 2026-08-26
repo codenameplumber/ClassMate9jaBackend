@@ -28,6 +28,18 @@
         <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
+
+        <!--
+            The AI keys are pinned empty on purpose.
+
+            Without this the suite reads .env, and the moment a real key is set
+            every test that touches the marker, the tutor or the course writer
+            starts making live API calls: slow, non-deterministic, and billed.
+            Tests that need a configured provider construct it themselves with
+            a fake key and Http::fake(). See OpenAiEngineTest.
+        -->
+        <env name="OPENAI_API_KEY" value=""/>
+        <env name="ANTHROPIC_API_KEY" value=""/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>

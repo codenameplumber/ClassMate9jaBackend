@@ -26,7 +26,14 @@ class Onboarding extends Component
     {
         $user = auth()->user();
 
-        // Only students have a wizard; everyone else is already set up.
+        // Teachers have a wizard of their own -- school, subjects, levels --
+        // because an admin cannot approve an account that has not said what it
+        // is for.
+        if ($user->isTeacher()) {
+            return $this->redirect(route('teacher.setup'), navigate: false);
+        }
+
+        // Parents and admins have nothing to choose.
         if (! $user->isStudent()) {
             $user->forceFill(['onboarded_at' => now()])->save();
 
@@ -99,13 +106,22 @@ class Onboarding extends Component
         $user->subjects()->sync($this->subjects);
 
         session()->flash('status', 'You are all set. Welcome to ClassMate 9ja!');
-        $this->redirect('/app/student/dashboard.html', navigate: false);
+        $this->redirect(route('learn.screen', 'dashboard'), navigate: false);
     }
 
     public function render()
     {
+        // Only subjects that are actually taught at the level chosen: offering
+        // a JSS1 student Further Maths is offering them an empty app.
+        $allSubjects = Subject::with('levels')
+            ->orderByDesc('is_core')
+            ->orderBy('name')
+            ->get()
+            ->filter(fn ($subject) => $subject->offersLevel($this->level))
+            ->values();
+
         return view('livewire.auth.onboarding', [
-            'allSubjects' => Subject::orderByDesc('is_core')->orderBy('name')->get(),
+            'allSubjects' => $allSubjects,
             'levels' => self::LEVELS,
         ]);
     }

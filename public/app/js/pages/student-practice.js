@@ -9,6 +9,8 @@ import { mountShell } from '../components/shell.js';
 import { getProgress, weakestSubject } from '../data/progress.js';
 import { byId, toneClass } from '../data/subjects.js';
 import { YEARS, EXAM_BODIES, topicsFor, countFor } from '../data/questions.js';
+import * as api from '../core/api.js';
+import * as store from '../core/store.js';
 
 boot();
 const me = requireAuth('student');
@@ -177,11 +179,20 @@ function render() {
         <section class="card">
           <div class="card-header"><span class="card-title">Your question bank</span></div>
           <div class="stack gap-3">
-            ${mine.map((s) => `
+            ${mine.map((s) => {
+              const stocked = countFor(s.id);
+              const state = (store.get('practice-state', {}) || {})[s.id];
+
+              return `
               <div class="row between t-sm">
                 <span class="row gap-2">${s.emoji} ${esc(s.short)}</span>
-                <span class="subtle tnum">${countFor(s.id)}+ questions</span>
-              </div>`).join('')}
+                <span class="subtle tnum">${
+                  stocked
+                    ? `${stocked}+ questions`
+                    : (state === 'building' ? 'being written…' : 'none yet')
+                }</span>
+              </div>`;
+            }).join('')}
           </div>
           <a class="btn btn-secondary btn-block btn-sm" style="margin-top:var(--s-4)"
              href="${url('student/downloads.html')}">Download more years</a>
@@ -197,12 +208,39 @@ function render() {
       topics.map((t) => `<option value="${esc(t)}" ${t === cfg.topic ? 'selected' : ''}>${esc(t)}</option>`).join('')}`;
   }
 
+  /**
+   * Nudge the server when the bank for this subject is thin.
+   *
+   * Fire-and-forget, and throttled by the server: the point is that the next
+   * sync brings questions, not that this call returns any. A student with no
+   * network is unaffected — api.js resolves offline rather than throwing.
+   */
+  function topUp(subjectId) {
+    if (countFor(subjectId) >= 10) return;
+
+    // The bank is keyed by subject and level; the topic filter on this screen
+    // is a question topic, not a scheme ref, so the whole subject is stocked.
+    api.requestPractice(subjectId)
+      .then((res) => {
+        if (res.ok && res.data?.queued) {
+          store.patch('practice-state', { [subjectId]: 'building' });
+        }
+      })
+      .catch(() => { /* never surfaces to the student */ });
+  }
+
   function paintMeta() {
     const mins = Math.round(cfg.count * 1.5);
     $('#timeHint').textContent = cfg.timed
       ? `${cfg.count} questions ≈ ${mins} minutes on the clock`
       : 'No timer — take as long as you need';
-    $('#poolChip').textContent = `${countFor(cfg.subject)}+ in ${byId(cfg.subject).short}`;
+    const pool = countFor(cfg.subject);
+
+    $('#poolChip').textContent = pool
+      ? `${pool}+ in ${byId(cfg.subject).short}`
+      : `Building your ${byId(cfg.subject).short} bank…`;
+
+    topUp(cfg.subject);
     $('#startBtn').setAttribute('href', url(
       `student/exam.html?subject=${cfg.subject}&count=${cfg.count}&timed=${cfg.timed ? 1 : 0}`
       + `${cfg.body ? `&body=${cfg.body}` : ''}${cfg.year ? `&year=${cfg.year}` : ''}`

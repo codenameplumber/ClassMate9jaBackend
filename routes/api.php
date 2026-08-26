@@ -33,6 +33,9 @@ Route::middleware(ApiToken::class)->group(function () {
     Route::post('/state', [SyncController::class, 'pushState']);
     Route::post('/attempts', [SyncController::class, 'recordAttempt']);
 
+    /* Practice, stocked on demand */
+    Route::post('/practice', [SyncController::class, 'requestPractice'])->middleware('throttle:10,1');
+
     /* Classwork set by a teacher */
     Route::get('/assignments', [SyncController::class, 'assignments']);
     Route::get('/assignments/{assignment}', [SyncController::class, 'assignment']);
