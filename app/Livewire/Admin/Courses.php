@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use App\Livewire\Concerns\PaginatesInHouse;
 use Livewire\WithPagination;
 
 /**
@@ -28,6 +29,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class Courses extends Component
 {
+    use PaginatesInHouse;
     use WithPagination;
 
     #[Url]

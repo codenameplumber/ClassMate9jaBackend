@@ -22,7 +22,7 @@
    deleted on activate, so a bump is a clean slate.
    ========================================================================== */
 
-const VERSION = 'cm9ja-v4';
+const VERSION = 'cm9ja-v6';
 const SHELL = `${VERSION}-shell`;
 
 /** Code assets: always revalidate against the network when one is reachable. */
@@ -47,6 +47,8 @@ const PRECACHE = [
   '/app/js/core/api.js',
   '/app/js/core/sync.js',
   '/app/js/core/boot.js',
+  '/app/js/core/offline.js',
+  '/app/js/password-toggle.js',
   '/app/js/components/shell.js',
   '/app/js/components/charts.js',
   '/app/js/data/subjects.js',

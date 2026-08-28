@@ -68,17 +68,3 @@ export function clearError(node) {
   node.textContent = '';
   node.classList.add('hidden');
 }
-
-/** Wire a password show/hide button to its input. */
-export function wirePasswordToggle(buttonSel, inputSel, iconFn) {
-  const btn = document.querySelector(buttonSel);
-  const input = document.querySelector(inputSel);
-  if (!btn || !input) return;
-  btn.addEventListener('click', () => {
-    const hidden = input.type === 'password';
-    input.type = hidden ? 'text' : 'password';
-    btn.setAttribute('aria-label', hidden ? 'Hide password' : 'Show password');
-    btn.innerHTML = iconFn(hidden ? 'eyeOff' : 'eye', 18);
-    input.focus();
-  });
-}

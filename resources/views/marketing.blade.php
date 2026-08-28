@@ -176,7 +176,10 @@
 <!-- ======================= PROBLEM ======================= -->
 <section class="container" style="padding-bottom:var(--s-4)">
   <div class="problem">
-    <div class="grid" style="grid-template-columns:1fr 1.15fr;gap:var(--s-10);align-items:center">
+    {{-- The columns live in home.css, not inline: an inline grid-template
+         cannot be overridden by a media query, which is why this section
+         stayed two-up and crushed on a phone. --}}
+    <div class="problem-grid">
       <div>
         <span class="chip chip-amber">The problem</span>
         <h2 style="margin-block:var(--s-4) var(--s-3)">

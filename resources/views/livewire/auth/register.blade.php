@@ -35,15 +35,21 @@
 
     <div class="field">
       <label class="label" for="password">Create password</label>
-      <input class="input @error('password') is-invalid @enderror" id="password" type="password"
-             wire:model="password" autocomplete="new-password" placeholder="At least 8 characters">
+      <div class="input-group no-icon has-action">
+        <input class="input @error('password') is-invalid @enderror" id="password" type="password"
+        wire:model="password" autocomplete="new-password" placeholder="At least 8 characters">
+        <button type="button" class="input-action" data-password-toggle="password"></button>
+      </div>
       @error('password') <span class="error-text">{{ $message }}</span> @enderror
     </div>
 
     <div class="field">
       <label class="label" for="password_confirmation">Confirm password</label>
-      <input class="input" id="password_confirmation" type="password"
-             wire:model="password_confirmation" autocomplete="new-password" placeholder="Type it again">
+      <div class="input-group no-icon has-action">
+        <input class="input" id="password_confirmation" type="password"
+        wire:model="password_confirmation" autocomplete="new-password" placeholder="Type it again">
+        <button type="button" class="input-action" data-password-toggle="password_confirmation"></button>
+      </div>
     </div>
 
     <label class="switch" style="align-items:flex-start">

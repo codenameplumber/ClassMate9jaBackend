@@ -160,6 +160,77 @@ export function ring(pct, { size = 96, stroke = 9, label = '', colour = 'var(--p
 
 /* --- Formatting ----------------------------------------------------------- */
 
+/**
+ * Turn LaTeX and markdown into something a student can actually read.
+ *
+ * The model is told to write plain text, and mostly does. This is the net for
+ * when it does not: tutor answers are cached on the server for thirty days, so
+ * a reply written before that instruction existed is still being served, and it
+ * reaches the screen as \[ \frac{x}{2} \] — which means nothing to a
+ * fourteen-year-old in Aba.
+ *
+ * Deliberately not a LaTeX renderer. Shipping one would be several hundred
+ * kilobytes over a metered connection to prettify text that should never have
+ * been LaTeX in the first place.
+ */
+export function plainMaths(text = '') {
+  let out = String(text);
+
+  const SYMBOLS = {
+    times: '×', cdot: '·', div: '÷', pm: '±',
+    approx: '≈', neq: '≠', leq: '≤', le: '≤',
+    geq: '≥', ge: '≥', rightarrow: '→', to: '→',
+    infty: '∞', pi: 'π', theta: 'θ', alpha: 'α',
+    beta: 'β', Delta: 'Δ', delta: 'δ', sum: 'Σ',
+    degree: '°', ldots: '…', dots: '…',
+  };
+
+  const SUP = {
+    0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
+    5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹',
+    '+': '⁺', '-': '⁻', n: 'ⁿ',
+  };
+
+  const SUB = {
+    0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄',
+    5: '₅', 6: '₆', 7: '₇', 8: '₈', 9: '₉',
+  };
+
+  /* Display and inline maths delimiters: keep the contents, drop the wrapper. */
+  out = out.replace(/\\\[|\\\]|\\\(|\\\)/g, ' ');
+  out = out.replace(/\$\$([\s\S]*?)\$\$/g, '$1');
+  out = out.replace(/\$([^$\n]+)\$/g, '$1');
+
+  /* Commands that carry structure worth keeping. */
+  out = out.replace(/\\(?:text|mathrm|mathbf|textbf|mbox)\s*\{([^{}]*)\}/g, '$1');
+  out = out.replace(/\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, '($1)/($2)');
+  out = out.replace(/\\sqrt\s*\{([^{}]*)\}/g, '√($1)');
+  out = out.replace(/\\begin\{[^}]*\}|\\end\{[^}]*\}/g, '');
+
+  /* Named symbols; anything unrecognised simply loses its backslash. */
+  out = out.replace(/\\([a-zA-Z]+)/g, (whole, name) =>
+    Object.prototype.hasOwnProperty.call(SYMBOLS, name) ? SYMBOLS[name] : name);
+
+  /* Powers and indices, where they are short enough to stay readable. */
+  out = out.replace(/\^\{?([0-9n+-])\}?/g, (whole, ch) => SUP[ch] || `^${ch}`);
+  out = out.replace(/_\{?([0-9])\}?/g, (whole, ch) => SUB[ch] || `_${ch}`);
+
+  /* Markdown the chat bubble cannot render anyway. */
+  out = out.replace(/\*\*([^*]+)\*\*/g, '$1');
+  out = out.replace(/(^|\s)\*([^*\n]+)\*/g, '$1$2');
+  out = out.replace(/^#{1,6}\s+/gm, '');
+  out = out.replace(/`{1,3}/g, '');
+
+  /* Whatever braces survived were grouping, not punctuation. */
+  out = out.replace(/[{}]/g, '');
+
+  /* Tidy the spacing the substitutions left behind. */
+  out = out.replace(/[ \t]{2,}/g, ' ');
+  out = out.replace(/\n{3,}/g, '\n\n');
+
+  return out.trim();
+}
+
 export function initials(name = '') {
   return name.trim().split(/\s+/).slice(0, 2).map((w) => w[0] || '').join('').toUpperCase();
 }

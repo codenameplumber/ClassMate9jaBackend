@@ -16,8 +16,11 @@
         <label class="label" for="password">Password</label>
         <a class="t-xs fw-semibold" href="{{ route('password.request') }}">Forgot password?</a>
       </div>
-      <input class="input @error('password') is-invalid @enderror" id="password" type="password"
-             wire:model="password" autocomplete="current-password" placeholder="Your password">
+      <div class="input-group no-icon has-action">
+        <input class="input @error('password') is-invalid @enderror" id="password" type="password"
+               wire:model="password" autocomplete="current-password" placeholder="Your password">
+        <button type="button" class="input-action" data-password-toggle="password"></button>
+      </div>
       @error('password') <span class="error-text">{{ $message }}</span> @enderror
     </div>
 

@@ -4,7 +4,7 @@ import { boot } from '../core/boot.js';
 import { hydrateIcons, icon } from '../core/icons.js';
 import { $, $$, esc, toast, confirmDialog, initials, modal, closeOverlay } from '../core/ui.js';
 import { url } from '../core/paths.js';
-import { requireAuth, updateUser, signOut } from '../core/auth.js';
+import { requireAuth, saveProfile, changePassword, signOut } from '../core/auth.js';
 import { mountShell } from '../components/shell.js';
 import * as store from '../core/store.js';
 import { LEVELS, LANGUAGES, DAILY_GOALS, byId } from '../data/subjects.js';
@@ -15,9 +15,11 @@ let me = requireAuth('student');
 function render() {
   const p = getProgress();
   const mine = (me.subjects || []).map(byId).filter(Boolean);
-  const linkCode = `${(me.name || 'STU').slice(0, 3).toUpperCase()}-${String(
-    Math.abs([...me.id].reduce((a, c) => a + c.charCodeAt(0), 0)) % 900 + 100
-  )}`;
+  /* The server computes this and sends it on the profile. It used to be
+     derived here from a string id, which stopped being a string when identity
+     moved server-side — [...me.id] on a number throws, and the whole page died
+     before it rendered. Two copies of the same rule would drift anyway. */
+  const linkCode = me.linkCode || '—';
 
   const page = mountShell({
     user: me,
@@ -209,25 +211,49 @@ function render() {
     $$('[data-level]').forEach((x) => x.classList.toggle('is-active', x === b));
   }));
 
-  $('#saveProfile').addEventListener('click', () => {
+  $('#saveProfile').addEventListener('click', async () => {
     const name = $('#name').value.trim();
     if (!name) return toast('Name cannot be empty', 'danger');
-    me = updateUser({ name, school: $('#school').value.trim(), level: pendingLevel });
-    toast('Profile saved', 'success');
+
+    const btn = $('#saveProfile');
+    btn.disabled = true;
+
+    const res = await saveProfile({
+      name,
+      school: $('#school').value.trim(),
+      level: pendingLevel,
+    });
+
+    btn.disabled = false;
+
+    if (res.error) return toast(res.error, 'danger');
+
+    me = res.user;
+    toast(res.offline ? 'Saved on this device — will sync later' : 'Profile saved', 'success');
   });
 
-  $$('[data-lang]').forEach((b) => b.addEventListener('click', () => {
-    me = updateUser({ language: b.dataset.lang });
+  $$('[data-lang]').forEach((b) => b.addEventListener('click', async () => {
     $$('[data-lang]').forEach((x) => {
       x.classList.toggle('is-active', x === b);
       x.querySelector('.choice-key').textContent = x === b ? '✓' : '';
     });
+
+    const res = await saveProfile({ language: b.dataset.lang });
+
+    if (res.error) return toast(res.error, 'danger');
+
+    me = res.user;
     toast('Tutor language updated', 'success');
   }));
 
-  $$('[data-goal]').forEach((b) => b.addEventListener('click', () => {
-    me = updateUser({ dailyGoal: Number(b.dataset.goal) });
+  $$('[data-goal]').forEach((b) => b.addEventListener('click', async () => {
     $$('[data-goal]').forEach((x) => x.classList.toggle('is-active', x === b));
+
+    const res = await saveProfile({ dailyGoal: Number(b.dataset.goal) });
+
+    if (res.error) return toast(res.error, 'danger');
+
+    me = res.user;
     toast('Daily goal updated', 'success');
   }));
 
@@ -253,11 +279,17 @@ function render() {
       <div class="stack gap-4">
         <div class="field">
           <label class="label" for="pwOld">Current password</label>
-          <input class="input" id="pwOld" type="password" placeholder="Current password">
+          <div class="input-group no-icon has-action">
+            <input class="input" id="pwOld" type="password" placeholder="Current password">
+            <button type="button" class="input-action" data-password-toggle="pwOld"></button>
+          </div>
         </div>
         <div class="field">
           <label class="label" for="pwNew">New password</label>
-          <input class="input" id="pwNew" type="password" placeholder="At least 6 characters">
+          <div class="input-group no-icon has-action">
+            <input class="input" id="pwNew" type="password" placeholder="At least 8 characters">
+            <button type="button" class="input-action" data-password-toggle="pwNew"></button>
+          </div>
         </div>
         <p class="error-text hidden" id="pwErr"></p>
         <div class="row gap-3">
@@ -266,19 +298,26 @@ function render() {
         </div>
       </div>`);
 
-    $('#pwSave').addEventListener('click', () => {
+    $('#pwSave').addEventListener('click', async () => {
       const err = $('#pwErr');
       const old = $('#pwOld').value;
       const nw = $('#pwNew').value;
-      if (old !== me.password) {
-        err.textContent = 'Current password is not correct.';
+
+      if (nw.length < 8) {
+        err.textContent = 'New password must be at least 8 characters.';
         return err.classList.remove('hidden');
       }
-      if (nw.length < 6) {
-        err.textContent = 'New password must be at least 6 characters.';
+
+      // The server checks the current password. This used to compare against a
+      // copy held in local storage, which stopped being true -- and was never
+      // a check worth having, since anyone editing storage could pass it.
+      const res = await changePassword(old, nw);
+
+      if (!res.ok) {
+        err.textContent = res.error;
         return err.classList.remove('hidden');
       }
-      me = updateUser({ password: nw });
+
       closeOverlay();
       toast('Password changed', 'success');
     });

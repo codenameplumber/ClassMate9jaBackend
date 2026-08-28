@@ -238,6 +238,13 @@
 .input-group .input-action:hover { color: var(--text); background: var(--bg-sunken); }
 .input-group.has-action .input { padding-right: var(--s-12); }
 
+/* A field whose only affix is the trailing action -- a password reveal, say.
+   Without this it inherits the left padding meant for a leading icon and the
+   text sits in from the edge for no reason. */
+.input-group.no-icon .input { padding-left: var(--s-4); }
+.input-group .input-action { background: transparent; border: 0; cursor: pointer; }
+.input-group .input-action:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+
 .input-prefix {
   display: flex; align-items: center;
   border: 1px solid var(--border-strong);

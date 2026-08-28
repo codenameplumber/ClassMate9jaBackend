@@ -1,7 +1,19 @@
 /* ==========================================================================
    progress.js — the student's learning record.
-   Seeded with a believable 3-week history so every screen has something to
-   show on first open; from then on the app writes real values into it.
+
+   Starts empty, on purpose.
+
+   It used to ship a believable three-week history so that every screen had
+   something to show on first open — 2,340 points, a twelve-day streak, five
+   invented activity entries. That was fine while this was a prototype with no
+   server behind it. It is not fine now: a student who registered this morning
+   opened Progress and was shown someone else's fortnight as their own, and
+   the screen looked frozen because nothing they did could move numbers that
+   had been made up.
+
+   Real history arrives from /api/bootstrap, where the server derives exams and
+   activity from records it actually holds. Everything else here is written by
+   the device as the student works.
    ========================================================================== */
 
 import * as store from '../core/store.js';
@@ -32,43 +44,22 @@ export const BADGES = [
 ];
 
 const DEFAULTS = {
-  points: 2340,
-  streak: 12,
-  bestStreak: 14,
-  minutesToday: 24,
-  questionsAnswered: 386,
-  lessonsDone: 27,
+  points: 0,
+  streak: 0,
+  bestStreak: 0,
+  minutesToday: 0,
+  questionsAnswered: 0,
+  lessonsDone: 0,
   /* Mon → Sun study minutes for the current week */
-  week: [35, 50, 20, 65, 40, 15, 24],
-  subjects: {
-    maths:     { mastery: 74, done: 17, total: 24, weak: ['Logarithms', 'Bearings'] },
-    english:   { mastery: 81, done: 19, total: 24, weak: ['Oral English'] },
-    physics:   { mastery: 68, done: 14, total: 24, weak: ['Electric Fields', 'Waves'] },
-    chemistry: { mastery: 41, done: 8,  total: 24, weak: ['Mole Concept', 'Organic Chemistry', 'Redox'] },
-    biology:   { mastery: 63, done: 12, total: 24, weak: ['Genetics'] },
-  },
-  badges: ['first-lesson', 'streak-7', 'exam-pass', 'offline-hero'],
-  /* Topic keys already completed, as "subject:topicId" */
-  doneTopics: [
-    'physics:w1t1', 'physics:w1t2', 'physics:w2t1', 'physics:w2t2', 'physics:w3t1', 'physics:w3t2',
-    'maths:w1t1', 'maths:w1t2', 'maths:w2t1', 'maths:w2t2',
-    'chemistry:w1t1', 'chemistry:w1t2',
-    'english:w1t1', 'english:w1t2', 'english:w2t1',
-    'biology:w1t1', 'biology:w1t2',
-  ],
-  exams: [
-    { id: 'e3', subject: 'english',   title: 'WAEC Mock · English',   score: 32, total: 40, mins: 45, date: '2026-08-16' },
-    { id: 'e2', subject: 'maths',     title: 'Scheme Exam · Maths',   score: 27, total: 40, mins: 60, date: '2026-08-12' },
-    { id: 'e1', subject: 'chemistry', title: 'JAMB Mock · Chemistry', score: 16, total: 40, mins: 40, date: '2026-08-08' },
-  ],
-  activity: [
-    { at: '2026-08-19T20:10:00', kind: 'lesson',   text: 'Completed “Electric Fields” · Physics Week 4', points: 40 },
-    { at: '2026-08-19T19:30:00', kind: 'practice', text: 'Answered 20 JAMB past questions · Maths',      points: 60 },
-    { at: '2026-08-18T21:05:00', kind: 'exam',     text: 'WAEC Mock · English — scored 80%',             points: 120 },
-    { at: '2026-08-18T18:40:00', kind: 'tutor',    text: 'Asked the AI tutor about balancing equations', points: 10 },
-    { at: '2026-08-17T17:15:00', kind: 'lesson',   text: 'Completed “Mole Concept intro” · Chemistry',   points: 40 },
-  ],
+  week: [0, 0, 0, 0, 0, 0, 0],
+  subjects: {},
+  badges: [],
+  doneTopics: [],
+  /* Both of these are derived on the server and arrive with the first sync. */
+  exams: [],
+  activity: [],
 };
+
 
 export function getProgress() {
   const saved = store.get(KEY);

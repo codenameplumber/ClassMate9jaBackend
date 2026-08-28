@@ -2,7 +2,7 @@
 
 import { boot } from '../core/boot.js';
 import { hydrateIcons, icon } from '../core/icons.js';
-import { $, $$, esc, toast, confirmDialog } from '../core/ui.js';
+import { $, $$, esc, toast, confirmDialog, plainMaths } from '../core/ui.js';
 import { param } from '../core/paths.js';
 import { requireAuth } from '../core/auth.js';
 import { mountShell, refreshTopbarStats } from '../components/shell.js';
@@ -81,9 +81,12 @@ function render() {
         <div class="bubble ai"><span class="who">AI tutor</span>${esc(greeting({ language: lang }))}</div>`;
       return;
     }
+    // Answers are cached server-side for thirty days, so a reply written
+    // before the model was told to avoid LaTeX is still being served. What the
+    // student types is shown exactly as typed.
     log.innerHTML = history.map((m) => m.role === 'me'
       ? `<div class="bubble me">${esc(m.text)}</div>`
-      : `<div class="bubble ai"><span class="who">AI tutor</span>${esc(m.text)}</div>`).join('');
+      : `<div class="bubble ai"><span class="who">AI tutor</span>${esc(plainMaths(m.text))}</div>`).join('');
     log.scrollTop = log.scrollHeight;
   }
   paintLog();

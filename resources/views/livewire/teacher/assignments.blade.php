@@ -159,18 +159,101 @@
             <span>{{ $draft['note'] }}</span>
           </div>
 
+          {{-- A draft is a suggestion, not a paper. Everything below is
+               editable before it reaches thirty students. --}}
           <div class="stack gap-3" style="max-height:340px;overflow-y:auto;margin-bottom:var(--s-5)">
             @foreach ($draft['questions'] as $i => $q)
               <div class="script-q">
                 <div class="row between gap-2" style="margin-bottom:var(--s-2)">
-                  <span class="t-2xs fw-bold subtle">QUESTION {{ $i + 1 }} · {{ $q['max_mark'] }} marks</span>
-                  <span class="chip chip-outline t-2xs">{{ $q['kind'] }}</span>
+                  <span class="t-2xs fw-bold subtle">QUESTION {{ $i + 1 }}</span>
+                  <span class="row gap-2">
+                    <span class="chip chip-outline t-2xs">{{ $q['kind'] }}</span>
+                    @if ($editing !== $i)
+                      <button class="btn btn-ghost btn-sm" wire:click="editQuestion({{ $i }})">Edit</button>
+                    @endif
+                  </span>
                 </div>
-                <div class="t-sm fw-medium" style="margin-bottom:var(--s-2)">{{ $q['prompt'] }}</div>
-                <div class="t-xs subtle">Answer: {{ $q['expected'] }}</div>
+
+                @if ($editing === $i)
+                  <div class="stack gap-3">
+                    <div class="field">
+                      <label class="label t-2xs" for="q{{ $i }}-prompt">Question</label>
+                      <textarea class="input" id="q{{ $i }}-prompt" rows="2"
+                                wire:model="draft.questions.{{ $i }}.prompt"></textarea>
+                    </div>
+
+                    @if ($q['kind'] === 'objective')
+                      <div class="stack gap-2">
+                        <span class="label t-2xs">Options — tap the correct one</span>
+                        @foreach ($q['options'] ?? [] as $o => $option)
+                          <div class="row gap-2" style="align-items:center">
+                            <button type="button"
+                                    class="btn btn-sm {{ (int) $q['answer_index'] === $o ? 'btn-primary' : 'btn-secondary' }}"
+                                    wire:click="setAnswer({{ $i }}, {{ $o }})"
+                                    title="Mark as the correct answer"
+                                    style="min-width:44px">{{ chr(65 + $o) }}</button>
+                            <input class="input grow" wire:model="draft.questions.{{ $i }}.options.{{ $o }}"
+                                   placeholder="Option {{ chr(65 + $o) }}">
+                          </div>
+                        @endforeach
+                        <p class="hint">Leave an option blank to drop it.</p>
+                      </div>
+                    @else
+                      <div class="field">
+                        <label class="label t-2xs" for="q{{ $i }}-expected">Marking scheme</label>
+                        <textarea class="input" id="q{{ $i }}-expected" rows="3"
+                                  wire:model="draft.questions.{{ $i }}.expected"
+                                  placeholder="What earns each mark"></textarea>
+                        <p class="hint">This is what the marker checks against, so be specific.</p>
+                      </div>
+                    @endif
+
+                    <div class="row between gap-2 wrap">
+                      <div class="row gap-2" style="align-items:center">
+                        <label class="label t-2xs" for="q{{ $i }}-marks" style="margin:0">Marks</label>
+                        <input class="input" id="q{{ $i }}-marks" type="number" min="1" max="20"
+                               style="width:80px"
+                               wire:model="draft.questions.{{ $i }}.max_mark">
+                      </div>
+
+                      <div class="row gap-2">
+                        @if (! $loop->first)
+                          <button class="btn btn-ghost btn-sm" wire:click="moveQuestion({{ $i }}, -1)" title="Move up">↑</button>
+                        @endif
+                        @if (! $loop->last)
+                          <button class="btn btn-ghost btn-sm" wire:click="moveQuestion({{ $i }}, 1)" title="Move down">↓</button>
+                        @endif
+                        <button class="btn btn-ghost btn-sm" wire:click="removeQuestion({{ $i }})">Delete</button>
+                        <button class="btn btn-secondary btn-sm" wire:click="stopEditing">Done</button>
+                      </div>
+                    </div>
+                  </div>
+                @else
+                  <div class="t-sm fw-medium" style="margin-bottom:var(--s-2)">
+                    {{ $q['prompt'] ?: 'Empty question — tap Edit' }}
+                  </div>
+                  @if ($q['kind'] === 'objective')
+                    <div class="t-xs subtle">
+                      Correct: {{ $q['options'][$q['answer_index']] ?? 'not set' }} · {{ $q['max_mark'] }} marks
+                    </div>
+                  @else
+                    <div class="t-xs subtle">
+                      Scheme: {{ Str::limit($q['expected'] ?: 'not set', 90) }} · {{ $q['max_mark'] }} marks
+                    </div>
+                  @endif
+                @endif
               </div>
             @endforeach
           </div>
+
+          <div class="row gap-2" style="margin-bottom:var(--s-4)">
+            <button class="btn btn-secondary btn-sm" wire:click="addQuestion('objective')">+ Objective</button>
+            <button class="btn btn-secondary btn-sm" wire:click="addQuestion('written')">+ Written</button>
+          </div>
+
+          @error('draft')
+            <div class="alert alert-warn" style="margin-bottom:var(--s-4)">{{ $message }}</div>
+          @enderror
 
           <div class="row gap-3">
             <button class="btn btn-secondary grow" wire:click="$set('draft', [])">Back</button>

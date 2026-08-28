@@ -27,6 +27,7 @@ Route::middleware(ApiToken::class)->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/onboarding', [AccountController::class, 'onboard']);
     Route::patch('/me', [AccountController::class, 'update']);
+    Route::post('/password', [AccountController::class, 'changePassword']);
 
     /* Content and progress */
     Route::get('/bootstrap', [SyncController::class, 'bootstrap']);

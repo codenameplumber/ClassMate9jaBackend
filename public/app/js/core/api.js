@@ -71,6 +71,9 @@ export const saveOnboarding = (answers) =>
 export const updateProfile = (changes) =>
   call('me', { method: 'PATCH', body: changes });
 
+export const changePassword = (body) =>
+  call('password', { method: 'POST', body });
+
 /* --- Content and progress -------------------------------------------------- */
 
 export const bootstrap = () => call('bootstrap');

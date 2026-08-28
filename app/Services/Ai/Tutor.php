@@ -65,6 +65,14 @@ class Tutor
         $system .= "\n\n{$voice}\n\n" . <<<'GUIDE'
         How to answer:
         - Lead with the idea in plain words before any formula.
+        - Write in plain text. No LaTeX, no markdown, no backslash commands and
+          no dollar signs around maths. The app shows your reply as written, so
+          \\frac{a}{b} and \\[ ... \\] arrive on a student's screen exactly like
+          that and mean nothing to them.
+        - Write maths the way it is written on a blackboard, using ordinary
+          characters: x^2 or x², sqrt(16) or \u{221A}16, a/b, 3 \u{00D7} 4, \u{2248}, \u{2264}, \u{03C0}.
+          For a fraction in running text write "a/b"; to set one out, put it on
+          its own line.
         - Use one everyday Nigerian example where it genuinely explains something —
           market trading, danfo fares, NEPA and generators, recharge cards, football.
           Never as decoration.

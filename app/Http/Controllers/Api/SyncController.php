@@ -78,9 +78,108 @@ class SyncController extends Controller
             ]),
             'questions' => $this->pastQuestionsFor($subjects, $level),
             'practice' => $this->stockPractice($subjects, $level),
-            'assignments' => $this->assignmentsFor($user),
-            'state' => $user->state?->payload,
+            'assignments' => $this->assignmentsFor($user),            'state' => $this->stateFor($user),
         ]);
+    }
+
+    /**
+     * The progress blob, with the parts the server actually knows overlaid.
+     *
+     * Exams sat and work marked are records on this server, not opinions the
+     * device holds -- so they are derived here rather than trusted from the
+     * payload. Everything else (streaks, mastery, badges) is the device's own
+     * and is passed through untouched.
+     *
+     * This exists because the two lists below used to come from a hard-coded
+     * array in the front-end, so every student -- including one who had just
+     * registered -- opened Progress and saw the same five invented entries
+     * about electric fields.
+     */
+    private function stateFor($user): array
+    {
+        $payload = $user->state?->payload ?? [];
+
+        return array_merge($payload, [
+            'exams' => $this->examsFor($user),
+            'activity' => $this->activityFor($user),
+        ]);
+    }
+
+    /** Practice sets and mocks, most recent first. */
+    private function examsFor($user): array
+    {
+        return $user->attempts()
+            ->with('subject')
+            ->limit(10)
+            ->get()
+            ->map(fn ($attempt) => [
+                'id' => 'a' . $attempt->id,
+                'subject' => $attempt->subject?->slug,
+                'title' => $attempt->title,
+                'score' => (int) $attempt->score,
+                'total' => (int) $attempt->total,
+                'mins' => (int) $attempt->minutes,
+                'date' => $attempt->submitted_at?->toDateString(),
+            ])
+            ->all();
+    }
+
+    /**
+     * What this student has actually done, newest first.
+     *
+     * Three sources merged: papers sat, lessons finished, and classwork a
+     * teacher has marked and released. A student who has done nothing sees an
+     * empty list, which is the truthful answer and the one that makes the
+     * screen mean something once it fills up.
+     */
+    private function activityFor($user): array
+    {
+        $attempts = $user->attempts()
+            ->with('subject')
+            ->limit(15)
+            ->get()
+            ->map(fn ($a) => [
+                'at' => $a->submitted_at?->toIso8601String(),
+                'kind' => $a->kind === 'practice' ? 'practice' : 'exam',
+                'text' => $a->total > 0
+                    ? "{$a->title} — scored {$a->percent()}%"
+                    : $a->title,
+                'points' => $a->score * 3,
+            ]);
+
+        $lessons = $user->lessonCompletions()
+            ->with('topic.subject')
+            ->latest('completed_at')
+            ->limit(15)
+            ->get()
+            ->map(fn ($c) => [
+                'at' => $c->completed_at?->toIso8601String(),
+                'kind' => 'lesson',
+                'text' => 'Completed "' . ($c->topic?->title ?? 'a lesson') . '"'
+                    . ($c->topic?->subject ? ' · ' . $c->topic->subject->short_name : ''),
+                'points' => 40,
+            ]);
+
+        $marked = Submission::with('assignment')
+            ->where('user_id', $user->id)
+            ->where('status', 'approved')
+            ->latest('approved_at')
+            ->limit(10)
+            ->get()
+            ->map(fn ($s) => [
+                'at' => $s->approved_at?->toIso8601String(),
+                'kind' => 'marked',
+                'text' => ($s->assignment?->title ?? 'Classwork')
+                    . ' — marked ' . $s->score() . '/' . $s->max_score,
+                'points' => $s->score() * 2,
+            ]);
+
+        return $attempts->concat($lessons)->concat($marked)
+            ->filter(fn ($row) => $row['at'] !== null)
+            ->sortByDesc('at')
+            ->take(20)
+            ->values()
+            ->all();
     }
 
     /**

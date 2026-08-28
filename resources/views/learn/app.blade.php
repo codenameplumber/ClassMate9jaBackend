@@ -50,6 +50,7 @@
     localStorage.setItem('cm9ja:session-user', JSON.stringify(@json($profile)));
   } catch (e) {}
 </script>
+<script src="/app/js/password-toggle.js" defer></script>
 </head>
 <body>
 {{-- The shell (sidebar, topbar, tab bar) is injected by shell.js; this page's

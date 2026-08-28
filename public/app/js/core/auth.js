@@ -19,6 +19,7 @@
    ========================================================================== */
 
 import * as store from './store.js';
+import * as api from './api.js';
 import { goReplace, url } from './paths.js';
 
 const SESSION_USER = 'session-user';
@@ -29,7 +30,10 @@ const SESSION_USER = 'session-user';
 export function currentUser() {
   const user = store.get(SESSION_USER, null);
 
-  return user && typeof user === 'object' && user.id ? user : null;
+  if (!user || typeof user !== 'object' || !user.id) return null;
+
+  // Older mirrors were written before `language` was derived from `locale`.
+  return 'language' in user ? user : { ...user, language: 'both' };
 }
 
 export const isSignedIn = () => Boolean(currentUser());
@@ -60,9 +64,120 @@ export function updateUser(changes) {
 export function adoptRemoteUser(profile) {
   if (!profile || typeof profile !== 'object') return currentUser();
 
-  store.set(SESSION_USER, profile);
+  store.set(SESSION_USER, withLanguage(profile));
 
-  return profile;
+  return currentUser();
+}
+
+/* --- Saving ---------------------------------------------------------------
+
+   The screens speak in `language` (english / pidgin / both) and the server in
+   `locale` (en / pcm / both). Translated in one place rather than at every
+   call site, because a screen that guesses wrong writes a valid value that
+   quietly means something else.
+   -------------------------------------------------------------------------- */
+
+const TO_LOCALE = { english: 'en', pidgin: 'pcm', both: 'both' };
+const TO_LANGUAGE = { en: 'english', pcm: 'pidgin', both: 'both' };
+
+/** Give a server profile the `language` field the screens read. */
+function withLanguage(profile) {
+  return { ...profile, language: TO_LANGUAGE[profile.locale] || 'both' };
+}
+
+/** Only the fields PATCH /api/me accepts, named the way it names them. */
+function toServer(changes) {
+  const body = {};
+
+  if ('name' in changes) body.name = changes.name;
+  if ('level' in changes) body.level = changes.level;
+  if ('school' in changes) body.school = changes.school;
+  if ('dailyGoal' in changes) body.dailyGoal = Number(changes.dailyGoal);
+  if ('subjects' in changes) body.subjects = changes.subjects;
+  if ('language' in changes) body.locale = TO_LOCALE[changes.language] || 'both';
+  if ('locale' in changes) body.locale = changes.locale;
+
+  return body;
+}
+
+/**
+ * Change the signed-in account, on this device and on the server.
+ *
+ * This exists because updateUser() alone stopped being enough. Local storage
+ * used to be the only record of an account, so writing to it *was* saving.
+ * Identity is server-side now and every page load overwrites the mirror with
+ * whatever the server says — so a local-only write looked like it worked and
+ * was gone by the next screen. That is exactly what happened to adding a
+ * subject.
+ *
+ * The local write still happens first, so the screen updates instantly and a
+ * student with no signal sees their choice take effect. The difference is that
+ * the change is now also sent, and the server's answer is adopted when it
+ * lands.
+ *
+ * @returns {Promise<{ok:boolean, offline:boolean, user:object|null, error:string|null}>}
+ */
+export async function saveProfile(changes) {
+  updateUser(changes);
+
+  const body = toServer(changes);
+
+  if (!Object.keys(body).length) {
+    return { ok: true, offline: false, user: currentUser(), error: null };
+  }
+
+  const res = await api.updateProfile(body);
+
+  if (res.ok && res.data?.user) {
+    adoptRemoteUser(res.data.user);
+
+    return { ok: true, offline: false, user: currentUser(), error: null };
+  }
+
+  // Offline is not a failure. The local mirror already holds the change and
+  // the next sync pushes it, so the student is told nothing alarming.
+  if (res.offline) {
+    return { ok: false, offline: true, user: currentUser(), error: null };
+  }
+
+  return {
+    ok: false,
+    offline: false,
+    user: currentUser(),
+    error: res.data?.message || 'That could not be saved. Please try again.',
+  };
+}
+
+/**
+ * Change the password.
+ *
+ * Never touches the local mirror: a password is not something the device
+ * should hold a copy of, and the old screen compared against one it kept in
+ * local storage, which stopped being true the moment the server took over.
+ */
+export async function changePassword(current, password, confirmation) {
+  const res = await api.changePassword({
+    current,
+    password,
+    password_confirmation: confirmation ?? password,
+  });
+
+  if (res.ok) {
+    if (res.data?.token) api.setToken(res.data.token);
+
+    return { ok: true, error: null };
+  }
+
+  if (res.offline) {
+    return { ok: false, error: 'You are offline. Try again when you have signal.' };
+  }
+
+  return {
+    ok: false,
+    error: res.data?.message
+      || Object.values(res.data?.errors || {})[0]?.[0]
+      || 'That could not be changed.',
+  };
 }
 
 /* --- Leaving --------------------------------------------------------------- */

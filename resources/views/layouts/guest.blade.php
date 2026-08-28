@@ -17,6 +17,7 @@
   } catch (e) {}
 </script>
 @livewireStyles
+<script src="/app/js/password-toggle.js" defer></script>
 </head>
 <body>
 

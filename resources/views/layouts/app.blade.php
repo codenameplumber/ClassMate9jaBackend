@@ -23,6 +23,7 @@
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
 </script>
+<script src="/app/js/password-toggle.js" defer></script>
 @livewireStyles
 </head>
 <body>

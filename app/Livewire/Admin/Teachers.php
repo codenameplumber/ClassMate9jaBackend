@@ -8,6 +8,7 @@ use App\Support\Levels;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use App\Livewire\Concerns\PaginatesInHouse;
 use Livewire\WithPagination;
 
 /**
@@ -22,6 +23,7 @@ use Livewire\WithPagination;
 #[Layout('layouts.app')]
 class Teachers extends Component
 {
+    use PaginatesInHouse;
     use WithPagination;
 
     #[Url]

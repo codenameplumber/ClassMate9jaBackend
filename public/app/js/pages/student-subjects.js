@@ -4,7 +4,7 @@ import { boot } from '../core/boot.js';
 import { hydrateIcons, icon } from '../core/icons.js';
 import { $, $$, esc, toast } from '../core/ui.js';
 import { url } from '../core/paths.js';
-import { requireAuth, updateUser } from '../core/auth.js';
+import { requireAuth, saveProfile } from '../core/auth.js';
 import { mountShell } from '../components/shell.js';
 import { getProgress } from '../data/progress.js';
 import { SUBJECTS, byId, toneClass } from '../data/subjects.js';
@@ -127,10 +127,31 @@ function paint() {
   );
 
   $$('[data-add]').forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const id = btn.dataset.add;
-      me = updateUser({ subjects: [...(me.subjects || []), id] });
-      toast(`${byId(id).name} added — scheme ready`, 'success');
+      if (btn.disabled) return;
+
+      btn.disabled = true;
+
+      // Saved to the server, not just to this device. A local-only write used
+      // to look like it worked and was gone by the next page load, because the
+      // server re-injects the account every time a screen is rendered.
+      const res = await saveProfile({ subjects: [...(me.subjects || []), id] });
+
+      btn.disabled = false;
+
+      if (res.error) {
+        toast(res.error, 'danger');
+        return;
+      }
+
+      me = res.user;
+      toast(
+        res.offline
+          ? `${byId(id).name} added — will sync when you are back online`
+          : `${byId(id).name} added — scheme ready`,
+        'success'
+      );
       paint();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });

@@ -5,11 +5,13 @@ namespace App\Livewire\Admin;
 use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Livewire\Concerns\PaginatesInHouse;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
 class People extends Component
 {
+    use PaginatesInHouse;
     use WithPagination;
 
     public string $search = '';

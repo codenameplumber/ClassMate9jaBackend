@@ -33,7 +33,10 @@ Route::post('/logout', function () {
     request()->session()->invalidate();
     request()->session()->regenerateToken();
 
-    return redirect()->route('home');
+    // Back to the sign-in page rather than the marketing site: someone who
+    // just signed out is far more likely to be switching accounts than to be
+    // reading about the product.
+    return redirect()->route('login');
 })->name('logout');
 
 /* ----------------------------------------------------------- authenticated */

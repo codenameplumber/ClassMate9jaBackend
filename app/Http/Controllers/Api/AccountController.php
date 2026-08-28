@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\School;
 use App\Models\Subject;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -54,17 +57,27 @@ class AccountController extends Controller
             'level' => ['sometimes', 'string', 'in:JSS1,JSS2,JSS3,SS1,SS2,SS3'],
             'locale' => ['sometimes', 'in:en,pcm,both'],
             'dailyGoal' => ['sometimes', 'integer', 'min:5', 'max:240'],
+            'school' => ['sometimes', 'nullable', 'string', 'max:190'],
             'subjects' => ['sometimes', 'array'],
             'subjects.*' => ['string', 'exists:subjects,slug'],
         ]);
 
         $user = auth()->user();
 
+        // Match an existing school by name before making another one, or the
+        // same school ends up in the table once per student who types it.
+        $schoolId = null;
+
+        if (array_key_exists('school', $data) && filled($data['school'])) {
+            $schoolId = School::firstOrCreate(['name' => trim($data['school'])])->id;
+        }
+
         $user->fill(array_filter([
             'name' => $data['name'] ?? null,
             'level' => $data['level'] ?? null,
             'locale' => $data['locale'] ?? null,
             'daily_goal' => $data['dailyGoal'] ?? null,
+            'school_id' => $schoolId,
         ], fn ($v) => $v !== null))->save();
 
         if (isset($data['subjects'])) {
@@ -72,6 +85,38 @@ class AccountController extends Controller
         }
 
         return response()->json(['ok' => true, 'user' => $this->profile($user->fresh())]);
+    }
+
+    /**
+     * Change the password from inside the app.
+     *
+     * The current one is required: a device left unlocked on a desk should not
+     * be enough to lock its owner out of their own account. Every other token
+     * is dropped afterwards, so a session someone else still holds dies with
+     * the old password.
+     */
+    public function changePassword(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'current' => ['required', 'string'],
+            'password' => ['required', 'confirmed', PasswordRule::min(8)],
+        ]);
+
+        $user = auth()->user();
+
+        if (! Hash::check($data['current'], $user->password)) {
+            return response()->json([
+                'message' => 'That is not your current password.',
+            ], 422);
+        }
+
+        $user->forceFill(['password' => $data['password']])->save();
+
+        return response()->json([
+            'ok' => true,
+            'token' => $user->issueApiToken(),
+            'message' => 'Password changed.',
+        ]);
     }
 
     /**

@@ -1,108 +1,107 @@
 /* ==========================================================================
-   student-downloads.js — the offline pack manager.
-   This screen is where the product promise becomes visible: what is on the
-   phone, how big it is, and what still needs network.
+   student-downloads.js — what is actually on this phone.
+
+   This screen is where the product promise becomes checkable, so everything on
+   it is measured rather than estimated. It used to be theatre: invented pack
+   sizes, a pretend 2 GB device, a progress bar driven by Math.random(), and a
+   seed that marked two subjects "downloaded" the first time the page opened.
+   A student who trusted it and then lost signal found an empty app.
+
+   Now: sizes come from the bytes in local storage, status comes from whether
+   the lessons are genuinely there, free space comes from the browser (and is
+   simply not shown when the browser will not say), and the download button
+   performs a real sync.
    ========================================================================== */
 
 import { boot } from '../core/boot.js';
 import { hydrateIcons, icon } from '../core/icons.js';
 import { $, $$, esc, toast, confirmDialog } from '../core/ui.js';
+import { url } from '../core/paths.js';
 import { requireAuth } from '../core/auth.js';
 import { mountShell } from '../components/shell.js';
-import * as store from '../core/store.js';
-import { SUBJECTS, byId, toneClass } from '../data/subjects.js';
+import { byId, toneClass } from '../data/subjects.js';
+import {
+  packStatus, packSize, packTopics, packQuestions,
+  totalSize, deviceStorage, shellCached, downloadAll, removePack, human,
+} from '../core/offline.js';
 
 boot();
 const me = requireAuth('student');
-const PACKS_KEY = 'packs';
-const DEVICE_MB = 2048;          // pretend free space on a modest phone
 
-/* Past-question packs are separate from subject packs: a student may want
-   every year of Maths but only recent years of Government. */
-const QUESTION_PACKS = [
-  { id: 'pq-2020-2025', label: 'Past questions 2020–2025', mb: 26, note: 'Most recent — start here' },
-  { id: 'pq-2015-2019', label: 'Past questions 2015–2019', mb: 24, note: 'Common repeats' },
-  { id: 'pq-2010-2014', label: 'Past questions 2010–2014', mb: 22, note: 'For thorough revision' },
-];
-
-function packs() {
-  const saved = store.get(PACKS_KEY);
-  if (saved) return saved;
-  /* Seed: the subjects the student picked at onboarding are already down. */
-  const seed = {};
-  (me.subjects || []).slice(0, 2).forEach((id) => { seed[id] = 'ready'; });
-  seed['pq-2020-2025'] = 'ready';
-  store.set(PACKS_KEY, seed);
-  return seed;
-}
-
-function setPack(id, state) {
-  const next = { ...packs(), [id]: state };
-  if (state === null) delete next[id];
-  store.set(PACKS_KEY, next);
-  return next;
-}
+let busy = false;
+let stage = '';
 
 function render() {
   const page = mountShell({
     user: me,
     active: 'downloads',
     title: 'Offline packs',
-    subtitle: 'Download once, study forever without data',
+    subtitle: 'Download once, study without data',
   });
+
   page.innerHTML = '<div id="body"></div>';
   paint();
 }
 
-function paint() {
-  const state = packs();
+async function paint() {
   const mine = (me.subjects || []).map(byId).filter(Boolean);
-  const others = SUBJECTS.filter((s) => !(me.subjects || []).includes(s.id));
+  const ready = mine.filter((s) => packStatus(s.id) === 'ready');
+  const missing = mine.filter((s) => packStatus(s.id) !== 'ready');
 
-  const usedSubjects = mine.filter((s) => state[s.id] === 'ready').reduce((a, s) => a + s.packMb, 0);
-  const usedQuestions = QUESTION_PACKS.filter((q) => state[q.id] === 'ready').reduce((a, q) => a + q.mb, 0);
-  const appMb = 18;
-  const used = usedSubjects + usedQuestions + appMb;
-  const pctOf = (mb) => (mb / DEVICE_MB) * 100;
-
-  const missing = mine.filter((s) => !state[s.id]);
+  const [space, shell] = await Promise.all([deviceStorage(), shellCached()]);
+  const held = totalSize();
 
   $('#body').innerHTML = `
-    <div class="page-head">
-      <div>
-        <h1>Offline packs</h1>
-        <p class="sub">Everything marked <b>On phone</b> works at 0% network.</p>
-      </div>
-      ${missing.length ? `<button class="btn btn-primary" id="allBtn">
-        ${icon('download', 16)} Download my ${missing.length} missing pack${missing.length === 1 ? '' : 's'}
-      </button>` : `<span class="chip chip-brand">✓ All your subjects are downloaded</span>`}
-    </div>
+    <!-- What is on the phone -->
+    <section class="card" style="margin-bottom:var(--s-8)">
+      <div class="card-body">
+        <div class="row between wrap gap-4">
+          <div>
+            <div class="t-xs subtle">On this phone</div>
+            <div class="fw-bold tnum" style="font-size:var(--text-2xl)">${human(held)}</div>
+            <div class="hint">
+              ${ready.length} of ${mine.length} ${mine.length === 1 ? 'subject' : 'subjects'} ready to use offline
+            </div>
+          </div>
 
-    <!-- Storage -->
-    <section class="card card-pad-lg" style="margin-bottom:var(--s-6)">
-      <div class="row between" style="margin-bottom:var(--s-4)">
-        <span class="card-title">Storage used on this phone</span>
-        <span class="fw-bold tnum">${used} MB <span class="subtle fw-normal">of ${(DEVICE_MB / 1024).toFixed(0)} GB free</span></span>
-      </div>
+          <div style="text-align:right">
+            <div class="t-xs subtle">The app itself</div>
+            <div>
+              ${shell
+                ? '<span class="chip chip-brand">Saved — opens with no network</span>'
+                : '<span class="chip chip-amber">Not saved yet</span>'}
+            </div>
+          </div>
+        </div>
 
-      <div class="storage-bar">
-        <i style="width:${pctOf(appMb)}%;background:var(--ink-400)"></i>
-        <i style="width:${pctOf(usedSubjects)}%;background:var(--primary)"></i>
-        <i style="width:${pctOf(usedQuestions)}%;background:var(--amber-400)"></i>
-      </div>
+        ${space ? `
+          <div class="bar" style="margin-top:var(--s-5)">
+            <i style="width:${Math.min(100, (space.usage / space.quota) * 100).toFixed(1)}%"></i>
+          </div>
+          <div class="hint" style="margin-top:var(--s-2)">
+            ${human(space.usage)} used of ${human(space.quota)} this browser will allow
+          </div>` : `
+          <div class="hint" style="margin-top:var(--s-4)">
+            This browser will not report free space, so only what is stored is shown.
+          </div>`}
 
-      <div class="row gap-6 wrap t-xs subtle" style="margin-top:var(--s-3)">
-        <span class="row gap-2"><i class="badge-dot" style="background:var(--ink-400)"></i> App ${appMb} MB</span>
-        <span class="row gap-2"><i class="badge-dot" style="background:var(--primary)"></i> Lessons ${usedSubjects} MB</span>
-        <span class="row gap-2"><i class="badge-dot" style="background:var(--amber-400)"></i> Past questions ${usedQuestions} MB</span>
-      </div>
+        <div class="row gap-3 wrap" style="margin-top:var(--s-5)">
+          <button class="btn btn-primary" id="allBtn" ${busy ? 'disabled' : ''}>
+            ${icon('download', 16)}
+            ${busy ? esc(stage || 'Working…') : missing.length
+              ? `Download ${missing.length} missing ${missing.length === 1 ? 'subject' : 'subjects'}`
+              : 'Check for updates'}
+          </button>
+          ${!navigator.onLine ? '<span class="chip chip-amber">You are offline</span>' : ''}
+        </div>
 
-      <div class="alert alert-info" style="margin-top:var(--s-5)">
-        ${icon('info', 18)}
-        <span>
-          Download over Wi-Fi or at school if you can. Once a pack is on the phone
-          it never downloads again — lessons, questions and marking all run locally.
-        </span>
+        <div class="alert alert-info" style="margin-top:var(--s-5)">
+          ${icon('info', 18)}
+          <span>
+            Download over Wi-Fi or at school if you can. Once it is on the phone
+            nothing downloads again — lessons, questions and marking all run locally.
+          </span>
+        </div>
       </div>
     </section>
 
@@ -110,120 +109,123 @@ function paint() {
     <section style="margin-bottom:var(--s-8)">
       <div class="section-head">
         <h2>My subjects</h2>
-        <span class="t-xs subtle">${mine.filter((s) => state[s.id] === 'ready').length}/${mine.length} on phone</span>
+        <span class="t-xs subtle">${ready.length}/${mine.length} on phone</span>
       </div>
-      ${mine.map((s) => packRow(s.id, s.emoji, s.name, `${s.topics} topics · 12-week scheme`, s.packMb, state[s.id], toneClass(s.tone))).join('')}
+      ${mine.length
+        ? mine.map(packRow).join('')
+        : `<div class="card"><div class="card-body">
+             <p class="muted">You have not chosen any subjects yet.</p>
+             <a class="btn btn-primary" href="${url('student/subjects.html')}">Choose subjects</a>
+           </div></div>`}
     </section>
 
-    <!-- Question packs -->
-    <section style="margin-bottom:var(--s-8)">
-      <div class="section-head">
-        <h2>Past-question packs</h2>
-        <span class="t-xs subtle">WAEC · JAMB · NECO</span>
-      </div>
-      ${QUESTION_PACKS.map((q) => packRow(q.id, '📝', q.label, q.note, q.mb, state[q.id], 'itile-amber')).join('')}
-    </section>
-
-    <!-- Other subjects -->
-    ${others.length ? `
     <section>
       <div class="section-head">
-        <h2>Other subjects</h2>
-        <span class="t-xs subtle">Add a subject first to download its pack</span>
+        <h2>Want another subject?</h2>
       </div>
-      ${others.slice(0, 4).map((s) => `
-        <div class="dl-row" style="opacity:.65">
-          <span class="itile ${toneClass(s.tone)}">${s.emoji}</span>
-          <div class="grow" style="min-width:0">
-            <div class="fw-semibold t-sm">${esc(s.name)}</div>
-            <div class="hint">${s.packMb} MB · not in your subject list</div>
-          </div>
-          <a class="btn btn-secondary btn-sm" href="subjects.html">Add subject</a>
-        </div>`).join('')}
-    </section>` : ''}`;
+      <div class="dl-row">
+        <span class="itile">➕</span>
+        <div class="grow" style="min-width:0">
+          <div class="fw-semibold t-sm">Add a subject</div>
+          <div class="hint">Its lessons and questions download with the next sync</div>
+        </div>
+        <a class="btn btn-secondary btn-sm" href="${url('student/subjects.html')}">Choose</a>
+      </div>
+    </section>`;
 
   wire();
   hydrateIcons();
 }
 
-function packRow(id, emoji, name, note, mb, state, tone = '') {
-  const ready = state === 'ready';
-  const busy = state === 'downloading';
+function packRow(subject) {
+  const status = packStatus(subject.id);
+  const bytes = packSize(subject.id);
+  const topics = packTopics(subject.id);
+  const questions = packQuestions(subject.id);
+
+  const chip = {
+    ready: '<span class="chip chip-brand">On phone</span>',
+    partial: '<span class="chip chip-amber">Partly downloaded</span>',
+    missing: '',
+  }[status];
+
+  const note = status === 'missing'
+    ? 'Not downloaded yet'
+    : `${topics} ${topics === 1 ? 'topic' : 'topics'} · ${questions} questions · ${human(bytes)}`;
+
   return `
-  <div class="dl-row" data-row="${id}">
-    <span class="itile ${tone}">${emoji}</span>
+  <div class="dl-row" data-row="${subject.id}">
+    <span class="itile ${toneClass(subject.tone)}">${subject.emoji}</span>
 
     <div class="grow" style="min-width:0">
       <div class="row gap-2 wrap">
-        <span class="fw-semibold t-sm">${esc(name)}</span>
-        ${ready ? '<span class="chip chip-brand">On phone</span>' : ''}
+        <span class="fw-semibold t-sm">${esc(subject.name)}</span>
+        ${chip}
       </div>
-      <div class="hint">${esc(note)} · ${mb} MB</div>
-      ${busy ? `<div class="bar bar-sm" style="margin-top:8px"><i data-bar="${id}" style="width:0%"></i></div>` : ''}
+      <div class="hint">${esc(note)}</div>
     </div>
 
-    ${busy
-      ? `<span class="t-xs fw-bold tnum" data-pct="${id}">0%</span>`
-      : ready
-        ? `<button class="btn btn-ghost btn-icon" data-remove="${id}" aria-label="Remove ${esc(name)}">
-             ${icon('close', 18)}
-           </button>`
-        : `<button class="btn btn-secondary btn-sm" data-get="${id}">
-             ${icon('download', 16)} Get
-           </button>`}
+    ${status === 'missing'
+      ? '<span class="t-xs subtle">Use the button above</span>'
+      : `<button class="btn btn-ghost btn-icon" data-remove="${subject.id}"
+                 aria-label="Remove ${esc(subject.name)} from this phone">
+           ${icon('close', 18)}
+         </button>`}
   </div>`;
 }
 
 function wire() {
-  $$('[data-get]').forEach((b) => b.addEventListener('click', () => download(b.dataset.get)));
+  $('#allBtn')?.addEventListener('click', async () => {
+    if (busy) return;
+
+    busy = true;
+    stage = 'Starting…';
+    await paint();
+
+    const res = await downloadAll(async (label) => {
+      stage = label;
+      await paint();
+    });
+
+    busy = false;
+    stage = '';
+
+    if (!res.ok) {
+      toast(
+        res.reason === 'offline'
+          ? 'You are offline — connect and try again'
+          : 'That did not finish. Try again in a moment.',
+        'danger'
+      );
+    } else {
+      toast(`Ready to use offline — ${human(res.bytes)} on this phone`, 'success');
+    }
+
+    await paint();
+  });
 
   $$('[data-remove]').forEach((b) => b.addEventListener('click', async () => {
     const id = b.dataset.remove;
+    const subject = byId(id);
+
     const yes = await confirmDialog({
-      title: 'Remove this pack?',
-      message: 'The lessons and questions will leave this phone. You will need network to download them again.',
+      title: `Remove ${subject?.name || 'this pack'}?`,
+      message: 'Its lessons and questions leave this phone. You stay enrolled, '
+        + 'and they come back the next time you download with network.',
       confirmText: 'Remove',
       danger: true,
     });
+
     if (!yes) return;
-    setPack(id, null);
-    toast('Pack removed');
-    paint();
+
+    removePack(id);
+    toast('Removed from this phone');
+    await paint();
   }));
-
-  $('#allBtn')?.addEventListener('click', () => {
-    const missing = (me.subjects || []).filter((id) => !packs()[id]);
-    missing.forEach((id, i) => setTimeout(() => download(id), i * 400));
-  });
 }
 
-/** Simulated download. The progress bar is fake; the state change is real. */
-function download(id) {
-  setPack(id, 'downloading');
-  paint();
+/* Repaint when the network comes back: the button says something different. */
+window.addEventListener('online', () => paint());
+window.addEventListener('offline', () => paint());
 
-  let pct = 0;
-  const bar = $(`[data-bar="${id}"]`);
-  const label = $(`[data-pct="${id}"]`);
-
-  const tick = setInterval(() => {
-    /* Uneven steps read like a real connection rather than a loading toy. */
-    pct = Math.min(100, pct + 6 + Math.round(Math.random() * 14));
-    if (bar) bar.style.width = `${pct}%`;
-    if (label) label.textContent = `${pct}%`;
-
-    if (pct >= 100) {
-      clearInterval(tick);
-      setPack(id, 'ready');
-      const s = byId(id);
-      toast(`${s ? s.name : 'Pack'} ready — works offline now`, 'success');
-      paint();
-    }
-  }, 260);
-}
-
-/* Start only once every module-level constant above is initialised.
-   Calling render() higher up would hit the temporal dead zone on any
-   const declared below it — a hoisted function can be called early,
-   the constants it closes over cannot. */
-if (me) render();
+render();
