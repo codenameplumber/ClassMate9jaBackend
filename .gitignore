@@ -25,3 +25,8 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Database dumps are data, not source. They can hold every student's
+# record, so they must never reach the repository.
+/database/dumps
+*.sql
