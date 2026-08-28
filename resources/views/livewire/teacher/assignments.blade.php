@@ -10,7 +10,7 @@
   <section class="card card-flat" style="background:var(--surface-brand);border-color:var(--border-brand);margin-bottom:var(--s-6)">
     <div class="row gap-4 wrap items-center">
       <span class="itile itile-lg">🤖</span>
-      <div class="grow" style="min-width:220px">
+      <div class="field-search">
         <div class="fw-bold">You do not write the questions any more</div>
         <p class="t-sm muted" style="margin-top:4px">
           Pick a class and a topic. The drafter pulls from the same scheme of work

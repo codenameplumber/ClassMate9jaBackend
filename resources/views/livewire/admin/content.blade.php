@@ -15,7 +15,7 @@
     @endforeach
   </div>
 
-  <div class="grid" style="grid-template-columns:300px minmax(0,1fr);gap:var(--s-6)">
+  <div class="split" style="--split:300px minmax(0,1fr)">
     <aside class="card side-card">
       <div class="card-header"><span class="card-title">Topics</span></div>
       <div class="stack gap-1" style="max-height:70vh;overflow-y:auto">

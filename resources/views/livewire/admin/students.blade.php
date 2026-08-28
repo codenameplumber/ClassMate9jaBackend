@@ -12,8 +12,8 @@
 
   {{-- Filters ------------------------------------------------------- --}}
   <div class="row" style="gap:var(--s-3);margin-bottom:var(--s-5);flex-wrap:wrap">
-    <input class="input grow" type="search" wire:model.live.debounce.300ms="search"
-           placeholder="Search by name or email" style="min-width:220px">
+    <input class="input field-search" type="search" wire:model.live.debounce.300ms="search"
+           placeholder="Search by name or email">
 
     <select class="input" wire:model.live="level" style="max-width:150px">
       <option value="">All levels</option>

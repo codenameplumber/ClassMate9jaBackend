@@ -67,7 +67,7 @@
     </section>
   @endif
 
-  <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:var(--s-6)">
+  <div class="split">
 
     <div class="stack gap-6">
       <section class="card">

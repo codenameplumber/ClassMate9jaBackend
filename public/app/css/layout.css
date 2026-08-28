@@ -88,6 +88,11 @@
 
 .app { min-height: 100vh; background: var(--bg); }
 
+/* A long word, a wide table or an over-eager min-width should scroll inside
+   its own container, never take the whole page with it. */
+.main, .page { min-width: 0; max-width: 100%; }
+.page > * { min-width: 0; }
+
 /* --- Sidebar ------------------------------------------------------------ */
 .sidebar {
   position: fixed; inset-block: 0; left: 0;
@@ -197,6 +202,9 @@
 .section-head {
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--s-3); margin-bottom: var(--s-4);
+  /* Without this a long heading and its right-hand count sit on one line and
+     push the page sideways on a phone. */
+  flex-wrap: wrap;
 }
 .section-head h2 { font-size: var(--text-lg); }
 

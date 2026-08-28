@@ -53,12 +53,12 @@
     </div>
   </section>
 
-  <div class="grid" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--s-6)">
+  <div class="split" style="--split:minmax(0,1.6fr) minmax(0,1fr)">
     <section class="card">
       <div class="card-header">
         <span class="card-title">Roster</span>
         <div class="row gap-2">
-          <input class="input" style="min-height:40px;width:180px" placeholder="Find a student"
+          <input class="input field-search" style="min-height:40px" placeholder="Find a student"
                  wire:model.live.debounce.300ms="search">
           <select class="select" style="min-height:40px;width:auto" wire:model.live="sort">
             <option value="name">A–Z</option>

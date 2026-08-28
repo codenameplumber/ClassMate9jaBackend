@@ -170,6 +170,87 @@ class InterfaceRegressionTest extends TestCase
         );
     }
 
+    /* ------------------------------------------------------- staff on a phone */
+
+    /**
+     * No staff view may hard-code its column layout inline.
+     *
+     * An inline style beats any stylesheet, so a grid written into the markup
+     * can never be stacked by a media query. That is precisely why the teacher,
+     * parent and admin pages stayed two columns at 360px and squeezed every
+     * card into a strip. The layout belongs in a class.
+     */
+    public function test_no_staff_view_hard_codes_its_columns(): void
+    {
+        $offenders = [];
+
+        foreach (glob(resource_path('views/livewire/**/*.blade.php'), GLOB_BRACE) as $file) {
+            $markup = file_get_contents($file);
+
+            if (preg_match('/style="[^"]*grid-template-columns/', $markup)) {
+                $offenders[] = str_replace(resource_path('views/'), '', $file);
+            }
+        }
+
+        $this->assertSame(
+            [],
+            $offenders,
+            'These views set grid-template-columns inline, so no breakpoint can reach them: '
+            . implode(', ', $offenders)
+        );
+    }
+
+    /** The two-column split has to have somewhere to go on a narrow screen. */
+    public function test_the_staff_split_stacks_on_a_phone(): void
+    {
+        $css = file_get_contents(public_path('app/css/pages/app.css'));
+
+        $this->assertStringContainsString('.split {', $css);
+        $this->assertMatchesRegularExpression(
+            '/@media[^{]*max-width:\s*900px[^{]*\{[^}]*\.split/s',
+            $css,
+            'The staff two-column split never stacks.'
+        );
+    }
+
+    /** Every staff screen that splits in two uses the class that can stack. */
+    public function test_the_staff_screens_use_the_split_class(): void
+    {
+        $screens = [
+            'livewire/teacher/dashboard.blade.php',
+            'livewire/teacher/classes.blade.php',
+            'livewire/parent/dashboard.blade.php',
+            'livewire/admin/content.blade.php',
+        ];
+
+        foreach ($screens as $screen) {
+            $this->assertStringContainsString(
+                'class="split"',
+                str_replace('class="split" style', 'class="split"|style',
+                    file_get_contents(resource_path('views/' . $screen))),
+                "{$screen} is not using the stacking split."
+            );
+        }
+    }
+
+    /** A wide table must scroll inside itself, not take the page sideways. */
+    public function test_every_staff_table_can_scroll_on_its_own(): void
+    {
+        foreach (glob(resource_path('views/livewire/**/*.blade.php'), GLOB_BRACE) as $file) {
+            $markup = file_get_contents($file);
+
+            if (! str_contains($markup, '<table')) {
+                continue;
+            }
+
+            $this->assertMatchesRegularExpression(
+                '/table-wrap|overflow-x/',
+                $markup,
+                str_replace(resource_path('views/'), '', $file) . ' has a table with nothing to scroll it.'
+            );
+        }
+    }
+
     /* ----------------------------------------------------- the landing page */
 
     /**

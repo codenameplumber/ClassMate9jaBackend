@@ -22,7 +22,7 @@
    deleted on activate, so a bump is a clean slate.
    ========================================================================== */
 
-const VERSION = 'cm9ja-v6';
+const VERSION = 'cm9ja-v7';
 const SHELL = `${VERSION}-shell`;
 
 /** Code assets: always revalidate against the network when one is reachable. */

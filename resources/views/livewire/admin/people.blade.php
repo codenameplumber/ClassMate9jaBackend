@@ -5,7 +5,7 @@
       <p class="sub">Every account on the platform</p>
     </div>
     <div class="row gap-2">
-      <input class="input" style="min-height:44px;width:220px" placeholder="Search name or email"
+      <input class="input field-search" style="min-height:44px" placeholder="Search name or email"
              wire:model.live.debounce.300ms="search">
       <select class="select" style="min-height:44px;width:auto" wire:model.live="role">
         <option value="">All roles</option>
